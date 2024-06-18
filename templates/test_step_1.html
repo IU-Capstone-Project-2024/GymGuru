@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}<title>Height and Weight</title>{% endblock %}
+{% block content %}
+<div class="flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-md p-10 max-w-sm w-full mx-auto mt-40">
+        <form action="" method="post">
+
+            <div class="mb-4">
+                <label for="height" class="block text-gray-700">Height (cm)</label>
+                <input type="number" name="height" required class="w-full py-2 px-3 border rounded focus:outline-none focus:border-custom_light_blue">
+            </div>
+            <div class="mb-4">
+                <label for="weight" class="block text-gray-700">Weight (kg)</label>
+                <input type="number" name="weight" required class="w-full py-2 px-3 border rounded focus:outline-none focus:border-custom_light_blue">
+            </div>
+            <div class="mt-6 text-center">
+                <button type="submit" class="bg-custom_light_blue py-2 px-4 rounded cursor-pointer hover:bg-custom_blue text-gray-700">Next</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
