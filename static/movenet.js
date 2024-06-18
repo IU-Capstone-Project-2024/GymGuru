@@ -1,15 +1,23 @@
 const localVideo = document.getElementById('localVideo');
-const remoteCanvas = document.getElementById('remoteCanvas');
-const ctx = remoteCanvas.getContext('2d');
+const resultCanvas = document.getElementById('resultCanvas');
+const scoreElement = document.getElementById('score');
+const finishButton = document.getElementById('finishButton');
+const ctx = resultCanvas.getContext('2d');
 const videoWidth = 640;
 const videoHeight = 480;
-remoteCanvas.width = videoWidth;
-remoteCanvas.height = videoHeight;
+resultCanvas.width = videoWidth;
+resultCanvas.height = videoHeight;
 
 // Variables to calculate FPS
 let lastFrameTime = performance.now();
 let frameCount = 0;
 let fps = 0;
+let score = 0
+
+finishButton.addEventListener('click', () => {
+    alert(`Вы завершили с ${score} баллами!`);
+    // Логика завершения упражнения
+});
 
 async function init() {
     // Initialize pose detection model
@@ -27,10 +35,11 @@ async function init() {
     navigator.mediaDevices.getUserMedia(constraints)
         .then(stream => {
             localVideo.srcObject = stream;
+            localVideo.play()
 
             localVideo.addEventListener('loadedmetadata', () => {
                 setInterval(async () => {
-                    ctx.drawImage(localVideo, 0, 0, remoteCanvas.width, remoteCanvas.height);
+                    ctx.drawImage(localVideo, 0, 0, resultCanvas.width, resultCanvas.height);
                     const poses = await detector.estimatePoses(localVideo);
                     if (poses.length > 0) {
                         const keypoints = poses[0].keypoints;
@@ -90,8 +99,8 @@ function drawSkeleton(keypoints, ctx) {
     // 16 - rightAnkle
     const adjacentPairs = [
 
-        [6, 8],[8, 10],
-        [5, 7],[7, 9],
+        [6, 8], [8, 10],
+        [5, 7], [7, 9],
         // [0, 5], [5, 6], [6, 7], [7, 8], // Left arm
         // [5, 11], [6, 12], // Shoulders to hips
         // [11, 12], // Hips
