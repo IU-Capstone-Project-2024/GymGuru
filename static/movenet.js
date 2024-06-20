@@ -3,21 +3,48 @@ const resultCanvas = document.getElementById('resultCanvas');
 const scoreElement = document.getElementById('score');
 const finishButton = document.getElementById('finishButton');
 const ctx = resultCanvas.getContext('2d');
-const videoWidth = 640;
-const videoHeight = 480;
+const videoWidth = 1280;
+const videoHeight = 640;
 resultCanvas.width = videoWidth;
 resultCanvas.height = videoHeight;
+
+let extractedKeypoints = [];
+let stage = '';
+let error = '';
 
 // Variables to calculate FPS
 let lastFrameTime = performance.now();
 let frameCount = 0;
 let fps = 0;
-let score = 0
+let score = 0;
 
 finishButton.addEventListener('click', () => {
     alert(`Вы завершили с ${score} баллами!`);
     // Логика завершения упражнения
 });
+
+function drawStage(text, x, y) {
+    if (text === "wrong") {
+        ctx.fillStyle = 'red';
+    }
+    else {
+        ctx.fillStyle = 'blue';
+    }
+    ctx.font = '30px Arial';
+    ctx.fillText(text, x, y);
+}
+
+function drawError(text, x, y) {
+    if (text.length == 0) {
+        ctx.fillStyle = 'green';
+        text = 'GOOD'
+    }
+    else {
+        ctx.fillStyle = 'red';
+    }
+    ctx.font = '30px Arial';
+    ctx.fillText(text, x, y);
+}
 
 async function init() {
     // Initialize pose detection model
@@ -42,7 +69,8 @@ async function init() {
                     ctx.drawImage(localVideo, 0, 0, resultCanvas.width, resultCanvas.height);
                     const poses = await detector.estimatePoses(localVideo);
                     if (poses.length > 0) {
-                        const keypoints = poses[0].keypoints;
+                        let keypoints = poses[0].keypoints;
+                        extractedKeypoints = keypoints;
 
                         // Draw keypoints
                         keypoints.forEach(keypoint => {
@@ -70,9 +98,12 @@ async function init() {
                     }
 
                     // Draw FPS on the canvas
-                    ctx.fillStyle = 'red';
-                    ctx.font = '20px Arial';
+                    ctx.fillStyle = 'green';
+                    ctx.font = '30px Arial';
                     ctx.fillText(`FPS: ${fps.toFixed(2)}`, 10, 30);
+                    
+                    drawStage(stage, 10, 60);
+                    drawError(error, 10, 90);
                 }, 1000 / 25); // FPS set to 25
             });
         })
