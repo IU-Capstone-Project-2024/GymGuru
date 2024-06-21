@@ -25,11 +25,10 @@ def login():
         user = session.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(url_for("profile"))
+            return redirect(url_for("index"))
         else:
             flash("Invalid email or password", "danger")
     return render_template("log_in.html", form=form)
-
 
 @app.route("/exercises")
 def exercises():
