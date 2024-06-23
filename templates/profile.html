@@ -1,1 +1,112 @@
 
+{% extends "base.html" %}
+{% block title %}<title>Вход</title>{% endblock %}
+{% block content %}
+    <div class="container mx-auto py-12 px-4">
+    <h1 class="text-2xl font-bold mb-8">Welcome, Ilia Muromets<span>👋</span></h1>
+    <section>
+        <h2 class="text-xl font-bold mb-4">Sport achievements</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center mb-4">
+                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="p-2 text-gray-700">crunches</p>
+            </div>
+
+            <div class="flex items-center mb-4">
+                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="p-2 text-gray-700">lunges</p>
+            </div>
+
+            <div class="flex items-center mb-4">
+                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="p-2 text-gray-700">v-up crunches</p>
+            </div>
+
+            <div class="flex items-center mb-4">
+                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="p-2 text-gray-700">lateral raises</p>
+            </div>
+
+            <div class="flex items-center mb-4">
+                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="p-2 text-gray-700">forward bend</p>
+            </div>
+
+            <div class="flex items-center mb-4">
+                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="p-2 text-gray-700">plank</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <h2 class="text-xl font-bold mb-4">Fitness test results</h2>
+        <div class="flex flex-col items-start space-y-4">
+            <div class="w-full md:w-1/2">
+                <label for="group_selector" class="text-gray-700">Group</label>
+                <select id="group_selector" class="bg-white border rounded w-full p-2 text-red-700">
+                    <option>B22-SD-01</option>
+                    <option>B22-DS-01</option>
+                    <option>B22-AI-01</option>
+                </select>
+                <button class="bg-custom_light_blue text-gray-700 rounded ml-4 p-2">Download</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Personal info</h2>
+        <form>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+                <div>
+                    <label class="block text-gray-700 mb-4 ">Name</label>
+                    <input type="text" value="Ilia" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-4">Surname</label>
+                    <input type="text" value="Muromets" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-4">Email</label>
+                <input type="email" value="i.muromets@innopolis.university" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-4">User type</label>
+                <input type="text" value="coach" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+            </div>
+            <div>
+                <button type="submit" class="bg-custom_light_blue text-gray-700 rounded py-2 px-4">Save</button>
+                <button type="submit" class="bg-white border focus:outline-none focus:border-custom_light_blue text-gray-700 rounded py-2 px-4">Cancel</button>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2 class="text-xl font-bold mb-4">Change password</h2>
+        <form>
+            <div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-4">Old password</label>
+                    <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-4">New password</label>
+                    <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                </div>
+                <div class="mb-4">
+                    <button type="submit" class="bg-custom_light_blue border focus:outline-none focus:border-custom_light_blue text-gray-700 rounded py-2 px-4">Save</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+
+
+
+    </div>
+{% endblock %}
