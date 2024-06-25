@@ -20,12 +20,7 @@ jobs:
       run: docker build -t nai1ka/gymguru:latest .
 
     - name: Stop and remove existing container if it exists
-      run: |
-        if [ $(docker ps -q -f name=gymguru) ]; then
-          docker stop gymguru
-          docker rm gymguru
-        fi
+      run: docker rm -f gymguru &>/dev/null && echo 'Removed old container'
 
-        
     - name: Run Docker container
       run: docker run -d --name gymguru nai1ka/gymguru:latest
