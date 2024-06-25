@@ -17,8 +17,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Docker container
-      run: |
-        docker build -t nai1ka/gymguru:latest .
+      run: docker build -t nai1ka/gymguru:latest .
 
     - name: Stop and remove existing container if it exists
       run: |
@@ -29,5 +28,4 @@ jobs:
 
         
     - name: Run Docker container
-      run: |
-        docker run -d --name gymguru nai1ka/gymguru:latest
+      run: docker run -d --name gymguru nai1ka/gymguru:latest
