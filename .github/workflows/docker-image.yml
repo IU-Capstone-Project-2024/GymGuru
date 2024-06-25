@@ -13,7 +13,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Build Docker container
       run: |
         docker build -t nai1ka/gymguru:latest .
