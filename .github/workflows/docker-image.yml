@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-run:
-    runs-on: ice-lazurite960
+    runs-on: self-hosted
 
     steps:
     
