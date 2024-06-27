@@ -39,17 +39,16 @@
         </div>
     </section>
 
-    <section>
+    <section class="mb-8">
         <h2 class="text-xl font-bold mb-4">Fitness test results</h2>
-        <div class="flex flex-col items-start space-y-4">
-            <div class="w-full md:w-1/2">
-                <label for="group_selector" class="text-gray-700">Group</label>
-                <select id="group_selector" class="bg-white border rounded w-full p-2 text-red-700">
-                    <option>B22-SD-01</option>
-                    <option>B22-DS-01</option>
-                    <option>B22-AI-01</option>
-                </select>
-                <button class="bg-custom_light_blue text-gray-700 rounded ml-4 p-2">Download</button>
+        <div class="flex items-center mt-4 ml-10">
+            <div class="relative inline-flex rounded-md border outline-none border-custom_light_blue bg-white flex">
+                <div id='select-group' class="cursor-pointer rounded-md px-4 py-2 text-gray-700">Select group</div>
+                <button id='toggle-button' type="button" class="border-l border-gray-300 inline-flex items-center justify-center rounded-r-md px-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700">
+                    <img width="20" src="../static/images/down_arrow.svg"/>
+                </button>
+                <div id="dropdown-menu" class="dropdown absolute top-full left-0 z-10 mt-10 w-full origin-top-right rounded-md border border-gray-100 bg-white shadow-lg hidden">
+                </div>
             </div>
         </div>
     </section>
@@ -103,5 +102,40 @@
             </div>
         </form>
     </section>
+    <div class="mt-8 text-center">
+        <button type="submit" class="bg-custom_light_blue border focus:outline-none focus:border-custom_light_blue text-gray-700 rounded py-2 px-4">Log out</button>
     </div>
+    </div>
+
+    <script>
+        const options=["B22-SD-01", "B22-DS-01", "B22-AI-01"];
+
+        const selectGroup = document.getElementById('select-group');
+        const toggleButton = document.getElementById('toggle-button');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+
+        function toggleDropdown() {
+            dropdownMenu.classList.toggle('hidden');
+        }
+
+        function createDropdownItems() {
+            options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'block rounded-lg px-4 py-2 text-sm text-gray-500 no-underline hover:bg-gray-50';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', function() {
+                    selectGroup.textContent = option;
+                    dropdownMenu.classList.add('hidden');
+                });
+                dropdownMenu.appendChild(optionElement);
+            });
+        }
+
+        selectGroup.addEventListener('click', toggleDropdown);
+        toggleButton.addEventListener('click', toggleDropdown);
+
+        createDropdownItems();
+
+    </script>
+
 {% endblock %}
