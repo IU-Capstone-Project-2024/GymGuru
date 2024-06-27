@@ -2,6 +2,8 @@
 class Exercises {
   constructor() {
     this.stage = null;
+    this.startTime = null;
+    this.endTime =  null;
 
     this.keypoints = extractedKeypoints;
     this.nose = this.keypoints[0];
@@ -34,6 +36,19 @@ class Exercises {
     return angle;
   }
 
+  startTimer() {
+    this.startTime = new Date().getTime();
+  }
+  
+  stopTimer() {
+    this.endTime = new Date().getTime();
+  }
+  
+  checkTimeElapsed() {
+    const timeElapsed = (this.endTime - this.startTime) / 1000;
+    return timeElapsed;
+  }
+
   gen_push_up() {
     const shoulder_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
     const shoulder_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
@@ -43,6 +58,9 @@ class Exercises {
     const knee_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
 
     if (shoulder_angle_left <= 120 && shoulder_angle_left >= 30 && shoulder_angle_right <= 120 && shoulder_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
+      if (this.stage != "down") {
+        this.startTimer();
+      }
       this.stage = "down";
       stage = this.stage;
     }
@@ -50,20 +68,31 @@ class Exercises {
       this.stage = "wrong";
       stage = this.stage;
       error = 'BAD BACK'
+      this.stopTimer();
     }
     if (knee_angle_right < 150) {
       this.stage = "wrong";
       stage = this.stage;
       error = 'STRAIGHTEN LEGS'
+      this.stopTimer();
     }
     if (this.wrist_left.y < this.shoulder_left.y || this.wrist_right.y < this.shoulder_right.y) {
       this.stage = "wrong";
       stage = this.stage;
+      this.stopTimer();
     }
     if (shoulder_angle_left >= 160 && shoulder_angle_right >= 160 && this.stage === "down" && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150  && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
-      this.stage = "up";
-      stage = this.stage;
-      score += 1;
+      this.stopTimer();
+      if (this.checkTimeElapsed() <= 3) {
+        this.stage = "up";
+        stage = this.stage;
+        score += 1;
+      }
+      else {
+        this.stage = "wrong";
+        stage = this.stage;
+        error = 'BE QUICKER'
+      }
     }
     if (back_angle_right >= 150 && knee_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
       if (this.stage === "wrong") {
