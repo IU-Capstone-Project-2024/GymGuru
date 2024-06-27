@@ -10,9 +10,9 @@
 <div class="bg-white rounded-lg shadow-md p-6 mx-auto mt-8 sm:ml-8 sm:mr-8">
     <!-- Navigation buttons for switching between exercise rankings -->
     <div class="flex justify-between mb-4">
-        <button id="prev-button" class="bg-blue-600 text-white px-4 py-2 rounded">Previous</button>
+        <button id="prev-button" class="bg-custom_light_blue text-gray-700 px-4 py-2 rounded">Previous</button>
         <span id="exercise-title" class="text-lg font-semibold">Push-ups</span>
-        <button id="next-button" class="bg-blue-600 text-white px-4 py-2 rounded">Next</button>
+        <button id="next-button" class="bg-custom_light_blue text-gray-700 px-4 py-2 rounded">Next</button>
     </div>
     <!-- Container for the exercise rankings -->
     <div id="rankings-container">
@@ -21,7 +21,7 @@
             <!-- Loop through each user in the 'users' variable -->
             {% for user in users %}
             <!-- List item for each user, with styling for background color, padding, margins, and flex layout -->
-            <li class="bg-gray-200 rounded-lg p-4 mb-4 flex flex-col">
+            <li class="bg-custom_light_blue rounded-lg p-4 mb-4 flex flex-col">
                 <!-- Username and rank container, with flex layout for alignment -->
                 <div class="flex items-center justify-between mb-2">
                     <!-- Display the user's name -->

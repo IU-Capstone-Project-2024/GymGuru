@@ -2,55 +2,58 @@
 {% block title %}<title>Вход</title>{% endblock %}
 {% block content %}
     <div class="container mx-auto py-12 px-4">
-    <h1 class="text-2xl font-bold mb-8">Welcome, Ilia Muromets<span>👋</span></h1>
+    <h1 class="text-2xl font-bold mb-12">Welcome, Ilia Muromets<span>👋</span></h1>
     <section>
-        <h2 class="text-xl font-bold mb-4">Sport achievements</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h2 class="text-xl font-bold mb-8">Sport achievements</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="flex items-center mb-4">
-                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">256</p>
                 <p class="p-2 text-gray-700">crunches</p>
             </div>
 
             <div class="flex items-center mb-4">
-                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">256</p>
                 <p class="p-2 text-gray-700">lunges</p>
             </div>
 
             <div class="flex items-center mb-4">
-                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">256</p>
                 <p class="p-2 text-gray-700">v-up crunches</p>
             </div>
 
             <div class="flex items-center mb-4">
-                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">256</p>
                 <p class="p-2 text-gray-700">lateral raises</p>
             </div>
 
             <div class="flex items-center mb-4">
-                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">256</p>
                 <p class="p-2 text-gray-700">forward bend</p>
             </div>
 
             <div class="flex items-center mb-4">
-                <p class="border border-custom_light_blue rounded w-16 mr-4 p-2">256</p>
+                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">256</p>
                 <p class="p-2 text-gray-700">plank</p>
             </div>
 
         </div>
     </section>
 
-    <section class="mb-8">
+     <section class="mb-8">
         <h2 class="text-xl font-bold mb-4">Fitness test results</h2>
-        <div class="flex items-center mt-4 ml-10">
-            <div class="relative inline-flex rounded-md border outline-none border-custom_light_blue bg-white flex">
-                <div id='select-group' class="cursor-pointer rounded-md px-4 py-2 text-gray-700">Select group</div>
-                <button id='toggle-button' type="button" class="border-l border-gray-300 inline-flex items-center justify-center rounded-r-md px-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700">
+        <div class="flex items-center mt-4 mb-4">
+            <div id="select-group-container" class="relative rounded-md flex bg-white border focus-within:border-custom_light_blue">
+                <div id='select-group' tabindex="0" class="cursor-pointer rounded-md px-4 py-2 text-gray-700 focus:outline-none">Select group</div>
+                <button id='toggle-button' tabindex="0" type="button" class="inline-flex items-center justify-center rounded-r-md px-2 text-gray-600 focus:outline-none">
                     <img width="20" src="../static/images/down_arrow.svg"/>
                 </button>
-                <div id="dropdown-menu" class="dropdown absolute top-full left-0 z-10 mt-10 w-full origin-top-right rounded-md border border-gray-100 bg-white shadow-lg hidden">
+                <div id="dropdown-menu" class="dropdown absolute top-full left-0 z-10 mt-2 w-full origin-top-right rounded-md border border-gray-100 bg-white shadow-lg hidden">
                 </div>
             </div>
         </div>
+         <div class="mb-4">
+                    <button type="submit" class="bg-custom_light_blue hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Download</button>
+         </div>
     </section>
 
     <section class="mb-8">
@@ -77,8 +80,8 @@
                 <input type="text" value="coach" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
             </div>
             <div>
-                <button type="submit" class="bg-custom_light_blue text-gray-700 rounded py-2 px-4">Save</button>
-                <button type="submit" class="bg-white border focus:outline-none focus:border-custom_light_blue text-gray-700 rounded py-2 px-4">Cancel</button>
+                <button type="submit" class="bg-custom_light_blue  hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Save</button>
+{#                <button type="submit" class="bg-white  hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Cancel</button>#}
             </div>
         </form>
     </section>
@@ -97,13 +100,13 @@
                     <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
                 </div>
                 <div class="mb-4">
-                    <button type="submit" class="bg-custom_light_blue border focus:outline-none focus:border-custom_light_blue text-gray-700 rounded py-2 px-4">Save</button>
+                    <button type="submit" class="bg-custom_light_blue hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Save</button>
                 </div>
             </div>
         </form>
     </section>
     <div class="mt-8 text-center">
-        <button type="submit" class="bg-custom_light_blue border focus:outline-none focus:border-custom_light_blue text-gray-700 rounded py-2 px-4">Log out</button>
+        <button type="submit" class="bg-custom_light_blue  hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Log out</button>
     </div>
     </div>
 
@@ -121,7 +124,7 @@
         function createDropdownItems() {
             options.forEach(option => {
                 const optionElement = document.createElement('div');
-                optionElement.className = 'block rounded-lg px-4 py-2 text-sm text-gray-500 no-underline hover:bg-gray-50';
+                optionElement.className = 'block rounded px-4 py-2 text-sm text-gray-500 no-underline hover:bg-custom_light_blue';
                 optionElement.textContent = option;
                 optionElement.addEventListener('click', function() {
                     selectGroup.textContent = option;
@@ -131,6 +134,14 @@
             });
         }
 
+        function clickOutsideToHideMenu(event) {
+            if (!dropdownMenu.contains(event.target) && ! selectGroup.contains(event.target) && !toggleButton.contains(event.target)){
+                dropdownMenu.classList.add('hidden');
+            }
+
+        }
+
+        document.addEventListener('click', clickOutsideToHideMenu);
         selectGroup.addEventListener('click', toggleDropdown);
         toggleButton.addEventListener('click', toggleDropdown);
 
