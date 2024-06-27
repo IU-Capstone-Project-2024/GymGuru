@@ -42,7 +42,7 @@ class Exercises {
     const knee_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
     const knee_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
 
-    if (shoulder_angle_left <= 120 && shoulder_angle_left >= 30 && shoulder_angle_right <= 120 && shoulder_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && knee_angle_right >= 150 && back_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y) {
+    if (shoulder_angle_left <= 120 && shoulder_angle_left >= 30 && shoulder_angle_right <= 120 && shoulder_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
       this.stage = "down";
       stage = this.stage;
     }
@@ -54,19 +54,18 @@ class Exercises {
     if (knee_angle_right < 150) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'STRAIGHT LEGS'
+      error = 'STRAIGHTEN LEGS'
     }
     if (this.wrist_left.y < this.shoulder_left.y || this.wrist_right.y < this.shoulder_right.y) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'UPSIDE DOWN'
     }
-    if (shoulder_angle_left >= 160 && shoulder_angle_right >= 160 && this.stage === "down" && knee_angle_right >= 150 && back_angle_right >= 150  && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y) {
+    if (shoulder_angle_left >= 160 && shoulder_angle_right >= 160 && this.stage === "down" && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150  && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
       this.stage = "up";
       stage = this.stage;
       score += 1;
     }
-    if (back_angle_right >= 150 && knee_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y) {
+    if (back_angle_right >= 150 && knee_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
       if (this.stage === "wrong") {
         this.stage = '';
         stage = this.stage;
