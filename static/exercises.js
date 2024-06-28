@@ -2,6 +2,7 @@
 class Exercises {
   constructor() {
     this.stage = null;
+    this.error = null;
     this.startTime = null;
     this.endTime =  null;
 
@@ -49,6 +50,10 @@ class Exercises {
     return timeElapsed;
   }
 
+  updateError() {
+    error = this.error;
+  }
+
   gen_push_up() {
     const shoulder_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
     const shoulder_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
@@ -57,7 +62,13 @@ class Exercises {
     const knee_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
     const knee_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
 
-    if (shoulder_angle_left <= 120 && shoulder_angle_left >= 30 && shoulder_angle_right <= 120 && shoulder_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
+    if (this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
+      begin = true;
+    }
+    if (this.wrist_left.y < this.knee_left.y && this.wrist_right.y < this.knee_right.y) {
+      begin = false;
+    }
+    if (shoulder_angle_left <= 120 && shoulder_angle_left >= 30 && shoulder_angle_right <= 120 && shoulder_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
       if (this.stage != "down") {
         this.startTimer();
       }
@@ -67,13 +78,15 @@ class Exercises {
     if (back_angle_right < 150) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'BAD BACK'
+      this.error = 'BAD BACK';
+      this.updateError();
       this.stopTimer();
     }
     if (knee_angle_right < 150) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'STRAIGHTEN LEGS'
+      this.error = 'STRAIGHTEN LEGS'
+      this.updateError();
       this.stopTimer();
     }
     if (this.wrist_left.y < this.shoulder_left.y || this.wrist_right.y < this.shoulder_right.y) {
@@ -81,7 +94,7 @@ class Exercises {
       stage = this.stage;
       this.stopTimer();
     }
-    if (shoulder_angle_left >= 160 && shoulder_angle_right >= 160 && this.stage === "down" && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150  && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
+    if (shoulder_angle_left >= 160 && shoulder_angle_right >= 160 && this.stage === "down" && knee_angle_right >= 150 && back_angle_right >= 150 && knee_angle_left >= 150 && back_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
       this.stopTimer();
       if (this.checkTimeElapsed() <= 3) {
         this.stage = "up";
@@ -91,7 +104,8 @@ class Exercises {
       else {
         this.stage = "wrong";
         stage = this.stage;
-        error = 'BE QUICKER'
+        this.error = 'GO UP QUICKER'
+        this.updateError();
       }
     }
     if (back_angle_right >= 150 && knee_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
@@ -99,7 +113,8 @@ class Exercises {
         this.stage = '';
         stage = this.stage;
       }
-      error = ''
+      this.error = null;
+      this.updateError();
     }
   }
 

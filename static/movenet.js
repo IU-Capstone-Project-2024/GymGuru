@@ -9,8 +9,11 @@ resultCanvas.width = videoWidth;
 resultCanvas.height = videoHeight;
 
 let extractedKeypoints = [];
+let begin = false;
 let stage = '';
-let error = '';
+let previousSound = null;
+let error = null;
+
 var socket = io()
 socket.on('connect', function () {
     console.log('Connected to server')
@@ -27,25 +30,50 @@ finishButton.addEventListener('click', () => {
     alert(`Вы завершили с ${score} баллами!`);
 });
 
-function drawStage(text, x, y) {
-    if (text === "wrong") {
+function drawFPS() {
+    ctx.fillStyle = 'green';
+    ctx.font = '30px Arial';
+    ctx.fillText(`FPS: ${fps.toFixed(2)}`, 10, 30);
+}
+
+function drawFPS() {
+    ctx.fillStyle = 'green';
+    ctx.font = '30px Arial';
+    ctx.fillText(`FPS: ${fps.toFixed(2)}`, 10, 30);
+}
+
+function drawStage() {
+    if (stage === "wrong") {
         ctx.fillStyle = 'red';
     } else {
         ctx.fillStyle = 'blue';
     }
     ctx.font = '30px Arial';
-    ctx.fillText(text, x, y);
+    ctx.fillText(stage, 10, 60);
 }
 
-function drawError(text, x, y) {
-    if (text.length == 0) {
-        ctx.fillStyle = 'green';
-        text = 'GOOD'
-    } else {
-        ctx.fillStyle = 'red';
-    }
+function drawError() {
     ctx.font = '30px Arial';
-    ctx.fillText(text, x, y);
+    if (error != null) {
+        ctx.fillStyle = 'red';
+        ctx.fillText(error, 10, 90);
+
+        if (error !== previousSound) {
+            speakError(error);
+        }
+    }
+    else {
+        ctx.fillStyle = 'green';
+        ctx.fillText('GOOD', 10, 90);
+    }
+}
+
+function speakError(text) {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+      previousSound = text;
+    }
 }
 
 async function init() {
@@ -99,13 +127,11 @@ async function init() {
                         console.log(`FPS: ${fps.toFixed(2)}`);
                     }
 
-                    // Draw FPS on the canvas
-                    ctx.fillStyle = 'green';
-                    ctx.font = '30px Arial';
-                    ctx.fillText(`FPS: ${fps.toFixed(2)}`, 10, 30);
-
-                    drawStage(stage, 10, 60);
-                    drawError(error, 10, 90);
+                    drawFPS();
+                    if (begin == true) {
+                        drawStage();
+                        drawError();
+                    }
                 }, 1000 / 25); // FPS set to 25
             });
         })
