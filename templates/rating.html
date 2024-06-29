@@ -6,7 +6,6 @@
 
 <!-- Block to define the main content of the page -->
 {% block content %}
-<!-- Container for the rating content, with styling for white background, rounded corners, shadow, padding, and margins -->
 <div class="bg-white rounded-lg shadow-md p-6 mx-auto mt-8 sm:ml-8 sm:mr-8">
     <!-- Navigation buttons for switching between exercise rankings -->
     <div class="flex justify-between mb-4">
@@ -16,88 +15,77 @@
     </div>
     <!-- Container for the exercise rankings -->
     <div id="rankings-container">
-        <!-- List of users participating in the contest -->
-        <ul id="push-ups-ranking" class="exercise-ranking">
-            <!-- Loop through each user in the 'users' variable -->
-            {% for user in users %}
-            <!-- List item for each user, with styling for background color, padding, margins, and flex layout -->
-            <li class="bg-custom_light_blue rounded-lg p-4 mb-4 flex flex-col">
-                <!-- Username and rank container, with flex layout for alignment -->
-                <div class="flex items-center justify-between mb-2">
-                    <!-- Display the user's name -->
-                    <span class="text-lg font-semibold">{{ user.name }}</span>
-                    <!-- Container for the user's rank -->
-                    <div class="flex items-center">
-                        <!-- Display the user's rank, with different styling for the first place -->
-                        <span
-                            class="text-sm font-semibold {{ 'text-white bg-blue-600' if loop.first else 'text-gray-700 bg-gray-400' }} rounded-full w-8 h-8 flex items-center justify-center">
-                            {{ loop.index }}
-                        </span>
-                    </div>
-                </div>
-                <!-- Display the user's push-up count -->
-                <div class="flex flex-col">
-                    <div class="mb-2">
-                        <span class="text-sm font-semibold">Push-ups:</span>
-                        <span class="text-sm">{{ user.exercise1_counter }}</span>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        <ul id="crunches-ranking" class="exercise-ranking hidden">
-            <!-- Loop through each user in the 'users' variable -->
-            {% for user in users %}
-            <!-- List item for each user, with styling for background color, padding, margins, and flex layout -->
-            <li class="bg-gray-200 rounded-lg p-4 mb-4 flex flex-col">
-                <!-- Username and rank container, with flex layout for alignment -->
-                <div class="flex items-center justify-between mb-2">
-                    <!-- Display the user's name -->
-                    <span class="text-lg font-semibold">{{ user.name }}</span>
-                    <!-- Container for the user's rank -->
-                    <div class="flex items-center">
-                        <!-- Display the user's rank, with different styling for the first place -->
-                        <span
-                            class="text-sm font-semibold {{ 'text-white bg-blue-600' if loop.first else 'text-gray-700 bg-gray-400' }} rounded-full w-8 h-8 flex items-center justify-center">
-                            {{ loop.index }}
-                        </span>
-                    </div>
-                </div>
-                <!-- Display the user's crunches count -->
-                <div class="flex flex-col">
-                    <div class="mb-2">
-                        <span class="text-sm font-semibold">Crunches:</span>
-                        <span class="text-sm">{{ user.exercise2_counter }}</span>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+        <!-- Dynamically generated exercise ranking lists will be inserted here -->
     </div>
 </div>
 
 <script>
     // JavaScript to handle switching between exercise rankings
-    const pushUpsRanking = document.getElementById('push-ups-ranking');
-    const crunchesRanking = document.getElementById('crunches-ranking');
+    const rankingsContainer = document.getElementById('rankings-container');
     const exerciseTitle = document.getElementById('exercise-title');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
 
-    // Initial state
-    let currentExerciseIndex = 0;
+    // Array of exercises
     const exercises = [
-        { title: 'Push-ups', element: pushUpsRanking },
-        { title: 'Crunches', element: crunchesRanking }
+        { id: 'push-ups', name: 'Push-ups', counter: 'push_up_counter' },
+        { id: 'squat', name: 'Squats', counter: 'squat_counter' },
+        { id: 'bicep-curl', name: 'Bicep Curls', counter: 'curl_counter' },
+        { id: 'crunches', name: 'Crunches', counter: 'crunch_counter' },
+        { id: 'lunges', name: 'Lunges', counter: 'lunge_counter' },
+        { id: 'v-up-crunches', name: 'V-up Crunches', counter: 'v_up_crunch_counter' },
+        { id: 'lateral-raises', name: 'Lateral Raises', counter: 'lateral_raise_counter' },
+        { id: 'forward-bend', name: 'Forward Bend', counter: 'forward_bend_counter' },
+        { id: 'plank', name: 'Plank', counter: 'plank_counter' }
     ];
+
+    // Pass the users data from Flask to JavaScript
+    const users = JSON.parse('{{ users | tojson | safe }}');
+
+    // Create a ranking list for each exercise
+    exercises.forEach(exercise => {
+        const list = document.createElement('ul');
+        list.id = `${exercise.id}-ranking`;
+        list.className = 'exercise-ranking hidden';
+
+        users.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.className = 'bg-custom_light_blue rounded-lg p-4 mb-4 flex flex-col';
+
+            const userInfo = `
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-lg font-semibold">${user.name}</span>
+                    <div class="flex items-center">
+                        <span class="text-sm font-semibold ${user === users[0] ? 'text-white bg-blue-600' : 'text-gray-700 bg-gray-400'} rounded-full w-8 h-8 flex items-center justify-center">
+                            ${users.indexOf(user) + 1}
+                        </span>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <div class="mb-2">
+                        <span class="text-sm font-semibold">${exercise.name}:</span>
+                        <span class="text-sm">${user[exercise.counter]}</span>
+                    </div>
+                </div>
+            `;
+
+            listItem.innerHTML = userInfo;
+            list.appendChild(listItem);
+        });
+
+        rankingsContainer.appendChild(list);
+    });
+
+    // Manage the display of exercises
+    let currentExerciseIndex = 0;
 
     function updateExerciseDisplay() {
         // Hide all exercise rankings
-        exercises.forEach(exercise => exercise.element.classList.add('hidden'));
+        document.querySelectorAll('.exercise-ranking').forEach(el => el.classList.add('hidden'));
         // Show the current exercise ranking
-        exercises[currentExerciseIndex].element.classList.remove('hidden');
+        document.getElementById(exercises[currentExerciseIndex].id + '-ranking').classList.remove('hidden');
         // Update the title
-        exerciseTitle.textContent = exercises[currentExerciseIndex].title;
+        exerciseTitle.textContent = exercises[currentExerciseIndex].name;
     }
 
     prevButton.addEventListener('click', () => {

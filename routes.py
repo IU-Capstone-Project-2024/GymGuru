@@ -15,7 +15,42 @@ def index():
 
 @app.route("/rating")
 def rating():
-    return render_template("rating.html")
+    # TODO: get users data
+    # users = User.query.all()
+    #
+    # users_data = [
+    #     {
+    #         'name': user.name,
+    #         'push_up_counter': user.push_up_counter,
+    #         'squat_counter': user.squat_counter,
+    #         'curl_counter': user.curl_counter,
+    #         'forward_bend_counter': user.forward_bend_counter,
+    #         'lateral_raise_counter': user.lateral_raise_counter,
+    #         'lunge_counter': user.lunge_counter,
+    #         'plank_counter': user.plank_counter,
+    #         'v_up_crunch_counter': user.v_up_crunch_counter,
+    #     }
+    #     for user in users
+    # ]
+
+    # TODO: order in database like in exercises.html
+    users_data = [
+        {
+            'name': "liana",
+            'push_up_counter': 10,
+            'squat_counter': 10,
+            'curl_counter': 5,
+            'crunch_counter': 5,
+            'lunge_counter': 10,
+            'forward_bend_counter': 3,
+            'lateral_raise_counter': 8,
+            'plank_counter': 10,
+            'v_up_crunch_counter': 10,
+        }
+
+    ]
+
+    return render_template("rating.html", users=users_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -64,11 +99,6 @@ def lunge_preview():
 @app.route("/test")
 def test():
     return render_template("test.html")
-
-
-@app.route("/profile")
-def profile():
-    return render_template("profile.html")
 
 
 @app.route("/curl")
@@ -164,3 +194,9 @@ def register():
 @login_manager.user_loader
 def load_user(user_id):
     return session.query(User).get(user_id)
+
+
+
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
