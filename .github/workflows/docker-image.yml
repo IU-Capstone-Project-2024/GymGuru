@@ -14,15 +14,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Access Environment Variables
-      run: |
-        if [ "$DB_PASSWORD" == "123456" ] 
-        then
-          echo "Correct"
-        fi
       
-        
     - name: Build Docker container
       run: docker compose build
 
