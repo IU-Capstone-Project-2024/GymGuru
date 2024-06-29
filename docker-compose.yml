@@ -19,6 +19,8 @@ services:
       dockerfile: Dockerfile
     environment:
       DOCKER: true
+      POSTGRES_USER: ${DB_LOGIN}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "80:1234"
     depends_on:
