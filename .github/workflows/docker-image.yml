@@ -14,7 +14,7 @@ jobs:
 
     - name: Access Environment Variables
       run: |
-        if ["$DB_LOGIN" -eq "nai1ka"] 
+        if ["$DB_LOGIN" == "nai1ka"] 
         then
           echo "Correct"
         fi
