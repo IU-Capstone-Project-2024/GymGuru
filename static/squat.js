@@ -1,13 +1,13 @@
 const checkKeypoints = () => {
     if (extractedKeypoints.length !== 0) {
-        const push_up = new Exercises();
+        const squat = new Exercises();
 
         const updateKeypointsInterval = setInterval(() => {
-            push_up.updateKeypoints();
+            squat.updateKeypoints();
         }, 10);
   
         const updateScoreInterval = setInterval(() => {
-            push_up.gen_push_up();
+            squat.gen_squat();
         }, 100);
   
     } else {

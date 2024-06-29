@@ -57,22 +57,23 @@ function drawError() {
     if (error != null) {
         ctx.fillStyle = 'red';
         ctx.fillText(error, 10, 90);
-
-        if (error !== previousSound) {
-            speakError(error);
-        }
     }
     else {
         ctx.fillStyle = 'green';
         ctx.fillText('GOOD', 10, 90);
     }
+    if (error !== previousSound) {
+        speakError(error);
+    }
 }
 
 function speakError(text) {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
-      previousSound = text;
+        if (text != null) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+        previousSound = text;
     }
 }
 
