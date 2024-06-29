@@ -25,16 +25,19 @@ let frameCount = 0;
 let fps = 0;
 let score = 0;
 
-finishButton.addEventListener('click', () => {
-      socket.emit("push_up", score);
-    alert(`Вы завершили с ${score} баллами!`);
-});
+let bendExercise = false;
+let bend = null;
 
-function drawFPS() {
-    ctx.fillStyle = 'green';
-    ctx.font = '30px Arial';
-    ctx.fillText(`FPS: ${fps.toFixed(2)}`, 10, 30);
-}
+// Логика завершения упражнения
+finishButton.addEventListener('click', () => {
+    if (bendExercise) {
+        alert(`Вы завершили с ${bend}!`);
+    }
+    else {
+        socket.emit("push_up", score);
+        alert(`Вы завершили с ${score} баллами!`);
+    }
+});
 
 function drawFPS() {
     ctx.fillStyle = 'green';
