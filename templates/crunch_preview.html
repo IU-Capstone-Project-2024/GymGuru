@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Crunch Technique</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="rounded-lg overflow-hidden shadow-lg">
+                <video muted autoplay loop class="w-full h-auto">
+                    <source src="../static/images/crunches/crunch-front.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="rounded-lg overflow-hidden shadow-lg">
+                <video muted autoplay loop class="w-full h-auto">
+                    <source src="../static/images/crunches/crunch-side.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div class="mt-8">
+            <a href="https://musclewiki.com/"><h2 class="text-2xl font-semibold mb-4">Crunch Technique:</h2></a>
+            <ul class="list-disc pl-4">
+                <li class="mb-2">Lie on your back with your knees bent and feet flat on the ground.</li>
+                <li class="mb-2">Place your hands behind your head without pulling on your neck.</li>
+                <li class="mb-2">Lift your shoulders off the ground, engaging your core muscles.</li>
+                <li class="mb-2">Exhale as you crunch up, then inhale as you slowly lower back down.</li>
+            </ul>
+        </div>
+        <div class="mt-8">
+            <p class="text-lg font-semibold">Position the device so that you can be seen in full height. The app will track repetitions and check execution technique.</p>
+        </div>
+        <div class="mt-8 text-center">
+            <p class="text-lg font-semibold">Recommended to perform 20 repetitions</p>
+            <a href="{{url_for('crunch')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 inline-block">Start</a>
+        </div>
+    </div>
+{% endblock %}
