@@ -4,8 +4,8 @@ services:
   postgres:
     image: postgres:13
     environment:
-      POSTGRES_USER: nai1ka
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: gymguru
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      DATABASE_URL: postgres://nai1ka:123456@postgres:5432/gymguru
+      DOCKER: true
     ports:
       - "80:1234"
     depends_on:
