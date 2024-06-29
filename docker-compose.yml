@@ -3,7 +3,6 @@ version: '3.8'
 services:
   postgres:
     image: postgres:13
-    container_name: postgres_container
     environment:
       POSTGRES_USER: nai1ka
       POSTGRES_PASSWORD: 123456
@@ -14,11 +13,10 @@ services:
       - "5432:5432"
     networks:
       - main_network
-  gymguru_web:
+  gymguru:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: gymguru
     environment:
       DATABASE_URL: postgres://nai1ka:123456@postgres:5432/gymguru
     ports:
