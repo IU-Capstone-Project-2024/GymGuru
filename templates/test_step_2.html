@@ -1,42 +1,31 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>Push-up</title>
+    <title>STEP 2: Forward Bend</title>
 {% endblock %}
 
 {% block content %}
     <div class="flex flex-col items-center justify-center min-h-screen bg-white-200 text-white">
-        <div id="camera" class="">
+        <div id="camera" class="h-8/12 w-8/12 px-4 pt-2 pb-2">
             <canvas id="resultCanvas" class="w-full h-full object-cover"></canvas>
         </div>
         <div id="camera" class="hidden">
             <video id="localVideo" autoplay playsinline class="hidden"></video>
         </div>
 
-        <!-- Container for score, rectangle, and finish button -->
-        <div class="flex flex-row items-center justify-center m-8 space-x-8">
-            <!-- Score Display -->
-            <div id="score" class="text-4xl font-bold text-blue-700">
-                Score: <span id="scoreValue"></span>
-            </div>
+        <div class="flex flex-row items-center justify-center m-8">
+            <div id="score" class="text-3xl font-bold text-blue-700 pr-16">Score: <span id="scoreValue">0</span></div>
+            <div id="points" class="text-3xl font-bold text-blue-700 pr-16">Points: <span id="pointsValue">0</span></div>
 
-            <!-- Rectangle whose width changes based on score -->
-            <div class="relative flex-1 bg-blue-300 h-8 rounded-md border border-blue-500">
-                <!-- Background of the rectangle -->
-                <div id="dynamic-rectangle" class="absolute top-0 left-0 h-full bg-blue-500 rounded-md" style="width: 0%;"></div>
-            </div>
-
-            <!-- Finish Button -->
-            <a href="{{ url_for('exercises') }}">
-                <button id="finishButton"
-                        class="ml-16 px-6 py-3 bg-blue-600 rounded-lg text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Finish
+            <a href="{{ url_for('test_step_3') }}">
+                <button id="nextButton"
+                        class="ml-16 px-6 py-3 text-2xl bg-blue-600 rounded-lg text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Next
                 </button>
             </a>
         </div>
     </div>
 
-    <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
@@ -46,15 +35,19 @@
     <script src="{{ url_for('static', filename='push_up.js') }}"></script>
 
     <script>
+        let points = 0;
+        let maxReached = false;
+
+        // Update score and points display
         setInterval(function() {
-            // Assume `score` is a variable you update in your code
             document.getElementById('scoreValue').textContent = score;
-
-            // Update the width of the dynamic rectangle based on the score value
-            const rectangle = document.getElementById('dynamic-rectangle');
-            const progressWidth = Math.min(score, 100); // Ensure the value does not exceed 100
-            rectangle.style.width = progressWidth + '%';
+            if (maxReached) {
+                document.getElementById('pointsValue').textContent = points + " (max)";
+            } else {
+                document.getElementById('pointsValue').textContent = points;
+            }
         }, 1000 / 25);
-    </script>
 
+
+    </script>
 {% endblock %}

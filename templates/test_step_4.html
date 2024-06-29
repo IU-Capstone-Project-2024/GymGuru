@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>STEP 4: Crunches</title>
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col items-center justify-center min-h-screen bg-white-200 text-white">
+        <div id="camera" class="h-8/12 w-8/12 px-4 pt-2 pb-2">
+            <canvas id="resultCanvas" class="w-full h-full object-cover"></canvas>
+        </div>
+        <div id="camera" class="hidden">
+            <video id="localVideo" autoplay playsinline class="hidden"></video>
+        </div>
+
+        <div class="flex flex-row items-center justify-center m-8">
+            <div id="score" class="text-3xl font-bold text-blue-700 pr-16">Score: <span id="scoreValue">0</span></div>
+            <div id="points" class="text-3xl font-bold text-blue-700 pr-16">Points: <span id="pointsValue">0</span></div>
+
+            <a href="{{ url_for('test_results') }}">
+                <button id="nextButton"
+                        class="ml-16 px-6 py-3 text-2xl bg-blue-600 rounded-lg text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Next
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    <script src="{{ url_for('static', filename='movenet.js') }}"></script>
+    <script src="{{ url_for('static', filename='exercises.js') }}"></script>
+    <script src="{{ url_for('static', filename='push_up.js') }}"></script>
+
+    <script>
+        let points = 0;
+        let maxReached = false;
+
+        // Update score and points display
+        setInterval(function() {
+            document.getElementById('scoreValue').textContent = score;
+            if (maxReached) {
+                document.getElementById('pointsValue').textContent = points + " (max)";
+            } else {
+                document.getElementById('pointsValue').textContent = points;
+            }
+        }, 1000 / 25);
+
+
+    </script>
+{% endblock %}

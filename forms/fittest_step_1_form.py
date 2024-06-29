@@ -6,9 +6,9 @@ from wtforms import IntegerField
 
 class FittestStep1Form(FlaskForm):
     height = IntegerField(
-        "Height", validators=[DataRequired("Invalid height"), NumberRange(min=0)]
+        "Height", validators=[DataRequired("Invalid height"), NumberRange(min=0, max=300)]
     )
     weight = IntegerField(
-        "Weight", validators=[DataRequired("Invalid weight"), NumberRange(min=0)]
+        "Weight", validators=[DataRequired("Invalid weight"), NumberRange(min=0, max=300)]
     )
     submit = SubmitField("FittestStep1")

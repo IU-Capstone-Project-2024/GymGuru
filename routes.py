@@ -118,7 +118,9 @@ def test_step_2():
 
 @app.route("/test_step_3")
 def test_step_3():
-    return render_template("test_step_3.html")
+    points = [10, 15, 25]
+    scores = [10, 15, 20]
+    return render_template('test_step_3.html', points=points, scores=scores)
 
 
 @app.route("/test_step_4")
