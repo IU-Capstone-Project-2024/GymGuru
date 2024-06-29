@@ -7,17 +7,20 @@ on:
 jobs:
   build-and-run:
     runs-on: self-hosted
-    env:
-      DB_LOGIN: ${{ secrets.DB_LOGIN }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Access Environment Variables
       run: |
-        export DB_PASSWORD = ${{ secrets.DB_PASSWORD }}
-        export DB_LOGIN = ${{ secrets.DB_LOGIN }}
+        if ["$DB_LOGIN" -eq "nai1ka"] 
+        then
+          echo "Correct"
+        fi
+      env:
+        DB_LOGIN: ${{ secrets.DB_LOGIN }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         
     - name: Build Docker container
       run: docker compose build
