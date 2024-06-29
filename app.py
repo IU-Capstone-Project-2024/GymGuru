@@ -17,7 +17,6 @@ from sqlalchemy import create_engine
 
 from routes import *
 
-print(Config.DB_LOGIN, Config.DB_PASSWORD)
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 connection = engine.connect()
 Base = declarative_base()

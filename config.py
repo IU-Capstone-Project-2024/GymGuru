@@ -9,4 +9,5 @@ class Config:
     DB_LOGIN = os.environ.get("DB_LOGIN") if ("DOCKER" in os.environ) else 'nai1ka'
     DB_PASSWORD = os.environ.get("DB_PASSWORD") if ("DOCKER" in os.environ) else "123456"
     DB_NAME = "gymguru"
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{DB_LOGIN}:123456@{URL}:5432/{DB_NAME}"
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://nai1ka:{DB_PASSWORD}@{URL}:5432/{DB_NAME}"
+    print(SQLALCHEMY_DATABASE_URI)
