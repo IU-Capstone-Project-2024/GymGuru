@@ -156,6 +156,34 @@ class Exercises {
     }
   }
 
+  gen_curl() {
+    //TODO
+  }
+
+  gen_crunch() {
+    //TODO
+  }
+
+  gen_lunge() {
+    //TODO
+  }
+
+  gen_v_up() {
+    //TODO
+  }
+
+  gen_raise() {
+    //TODO
+  }
+
+  gen_bend() {
+  //TODO
+  }
+
+  gen_plank() {
+    //TODO
+  }
+
   updateKeypoints() {
     this.keypoints = extractedKeypoints;
     this.nose = this.keypoints[0];

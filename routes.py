@@ -34,6 +34,16 @@ def login():
     return render_template("log_in.html", form=form)
 
 
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
+
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
+
+
 @app.route("/exercises")
 def exercises():
     return render_template("exercises.html")
@@ -65,14 +75,28 @@ def lunge_preview():
     return render_template('lunge_preview.html')
 
 
-@app.route("/test")
-def test():
-    return render_template("test.html")
+# Define a route for the V-up crunch preview page
+@app.route('/v_up_crunch_preview')
+def v_up_crunch_preview():
+    return render_template('v_up_crunch_preview.html')
 
 
-@app.route("/profile")
-def profile():
-    return render_template("profile.html")
+# Define a route for the lateral raise preview page
+@app.route('/lateral_raise_preview')
+def lateral_raise_preview():
+    return render_template('lateral_raise_preview.html')
+
+
+# Define a route for the forward bends preview page
+@app.route('/forward_bend_preview')
+def forward_bend_preview():
+    return render_template('forward_bend_preview.html')
+
+
+# Define a route for the plank preview page
+@app.route('/plank_preview')
+def plank_preview():
+    return render_template('plank_preview.html')
 
 
 @app.route("/curl")
@@ -88,6 +112,36 @@ def push_up():
 @app.route("/squat")
 def squat():
     return render_template("squat.html")
+
+
+@app.route("/crunch")
+def crunch():
+    return render_template("crunch.html")
+
+
+@app.route("/lunge")
+def lunge():
+    return render_template("lunge.html")
+
+
+@app.route("/v_up_crunch")
+def v_up_crunch():
+    return render_template("v_up_crunch.html")
+
+
+@app.route("/lateral_raise")
+def lateral_raise():
+    return render_template("lateral_raise.html")
+
+
+@app.route("/forward_bend")
+def forward_bend():
+    return render_template("forward_bend.html")
+
+
+@app.route("/plank")
+def plank():
+    return render_template("plank.html")
 
 
 @app.route("/test_preview")
@@ -132,30 +186,6 @@ def test_step_4():
 def logout():
     logout_user()
     return redirect(url_for("index"))
-
-
-# Define a route for the V-up crunch preview page
-@app.route('/v_up_crunch_preview')
-def v_up_crunch_preview():
-    return render_template('v_up_crunch_preview.html')
-
-
-# Define a route for the lateral raise preview page
-@app.route('/lateral_raise_preview')
-def lateral_raise_preview():
-    return render_template('lateral_raise_preview.html')
-
-
-# Define a route for the forward bends preview page
-@app.route('/forward_bend_preview')
-def forward_bend_preview():
-    return render_template('forward_bend_preview.html')
-
-
-# Define a route for the plank preview page
-@app.route('/plank_preview')
-def plank_preview():
-    return render_template('plank_preview.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
