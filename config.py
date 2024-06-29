@@ -1,6 +1,8 @@
+import os
 from os import urandom
 
 
 class Config:
     SECRET_KEY = urandom(32)
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:sna@5.42.81.155:5432/gymguru"
+    #SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://nai1ka:123456@postgres:5432/gymguru"
