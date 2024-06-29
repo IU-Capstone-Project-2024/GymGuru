@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user
 
 from app import app, login_manager, session
+from forms.fittest_step_1_form import FittestStep1Form
 from forms.login_form import LoginForm
 from forms.register_form import RegistrationForm
 from models.User import User
@@ -31,6 +32,7 @@ def login():
         else:
             flash("Invalid email or password", "danger")
     return render_template("log_in.html", form=form)
+
 
 @app.route("/exercises")
 def exercises():
@@ -98,9 +100,15 @@ def test_results():
     return render_template("test_results.html")
 
 
-@app.route("/test_step_1")
+@app.route('/test_step_1', methods=['GET', 'POST'])
 def test_step_1():
-    return render_template("test_step_1.html")
+    form = FittestStep1Form()
+    if request.method == "POST" and form.validate_on_submit():
+        height = form.height.data
+        weight = form.weight.data
+        print(height, weight)
+        return redirect(url_for("test_step_2"))
+    return render_template("test_step_1.html", form=form)
 
 
 @app.route("/test_step_2")
