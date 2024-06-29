@@ -17,7 +17,7 @@ jobs:
     - name: Access Environment Variables
       run: |
         export DB_PASSWORD = ${{ secrets.DB_PASSWORD }}
-        export DB_LOGIN = $DB_LOGIN
+        export DB_LOGIN = ${{ secrets.DB_LOGIN }}
         
     - name: Build Docker container
       run: docker compose build
