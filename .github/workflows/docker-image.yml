@@ -7,6 +7,9 @@ on:
 jobs:
   build-and-run:
     runs-on: self-hosted
+    env:
+        DB_LOGIN: ${{ secrets.DB_LOGIN }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     
     steps:
     - name: Checkout code
@@ -18,9 +21,7 @@ jobs:
         then
           echo "Correct"
         fi
-      env:
-        DB_LOGIN: ${{ secrets.DB_LOGIN }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      
         
     - name: Build Docker container
       run: docker compose build
@@ -30,4 +31,7 @@ jobs:
 
     - name: Run Docker container
       run: docker compose up -d
+      env:
+        DB_LOGIN: ${{ secrets.DB_LOGIN }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
      
