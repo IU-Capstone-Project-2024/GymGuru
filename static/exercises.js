@@ -161,7 +161,26 @@ class Exercises {
   }
 
   gen_crunch() {
-    //TODO
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (hip_knee_ankle_angle_right < 120 && hip_knee_ankle_angle_left < 120 && this.knee_left.y < this.shoulder_left.y && this.knee_right.y < this.shoulder_right.y && this.knee_left.y < this.hip_left.y && this.knee_right.y < this.hip_right.y)  {
+      begin = true;
+    }
+    else {
+      begin = false;
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left < 120 && hip_knee_ankle_angle_right < 120 && this.knee_left.y < this.shoulder_left.y && this.knee_right.y < this.shoulder_right.y && this.knee_left.y < this.hip_left.y && this.knee_right.y < this.hip_right.y) {
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left < 120 && shoulder_hip_ankle_angle_right < 120 && hip_knee_ankle_angle_left < 120 && hip_knee_ankle_angle_right < 120 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && this.knee_left.y < this.hip_left.y && this.knee_right.y < this.hip_right.y && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
   }
 
   gen_lunge() {
