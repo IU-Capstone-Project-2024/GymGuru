@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:13
     environment:
-      POSTGRES_USER: ${DB_USER}
+      POSTGRES_USER: ${DB_LOGIN}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: gymguru
     volumes:
