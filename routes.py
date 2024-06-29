@@ -15,7 +15,9 @@ def index():
 
 @app.route("/rating")
 def rating():
-    return render_template("rating.html")
+    users = (session.query(User).all())
+    users_data = [user.to_json() for user in users]
+    return render_template("rating.html", users=users_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])
