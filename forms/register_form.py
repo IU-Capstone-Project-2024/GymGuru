@@ -7,6 +7,9 @@ class RegistrationForm(FlaskForm):
     name = StringField(
         "Name", validators=[InputRequired(), Length(min=4, max=20)]
     )
+    surname = StringField(
+        "Surname", validators=[InputRequired(), Length(min=4, max=20)]
+    )
     email = StringField(
         "Email",
         validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],

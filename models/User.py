@@ -1,14 +1,21 @@
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Enum as SQLEnum
 from werkzeug.security import generate_password_hash, check_password_hash
+import enum
 
 from app import Base
+
+class UserTypeEnum(enum.Enum):
+    coach = "coach"
+    student = "student"
 
 class User(Base, UserMixin):
     """User database model"""
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
+    surname = Column(String(80), nullable=False)
+    user_type = Column(SQLEnum(UserTypeEnum), nullable=False, default=UserTypeEnum.student)
     email = Column(String(), unique=True, nullable=False)
     hashed_password = Column(String(500), nullable=False)
     bench_press_counter = Column(Integer, default=0)

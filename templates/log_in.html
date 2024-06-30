@@ -2,8 +2,17 @@
 {% block title %}<title>Вход</title>{% endblock %}
 {% block content %}
 <div class="bg-white rounded-lg shadow-md p-10 mx-auto mt-16 w-full sm:w-96">
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="mb-4">
+                <div class="text-red-700">
+                    {{ messages[0] }}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
 <!--    field for email-->
-    <form action="" method="post">
+    <form id="login_form" action="" method="post">
 <!--        prevent CSRF attack-->
         {{ form.hidden_tag() }}
         <div class="mb-4">
@@ -14,7 +23,8 @@
         <div class="mb-4">
     <!--    field for password-->
             <label for="password" class="block text-gray-700">Password</label>
-            <input type="password" name="password" required class="w-full py-2 px-3 border rounded focus:outline-none focus:border-custom_light_blue">
+            <input type="password" name="password" id="password" required class="w-full py-2 px-3 border rounded focus:outline-none focus:border-custom_light_blue">
+            <small id="password_error" class="text-red-500 hidden">Password must be at least 6 characters long</small>
         </div>
 
         <p class="mt-4" class="text-gray-700">No account? <a href="{{ url_for('register') }}" class="text-custom_blue">Sign up</a></p>
@@ -27,4 +37,18 @@
 
     </form>
 </div>
+    <script>
+        document.getElementById("login_form").addEventListener("submit", function(event) {
+            var password = document.getElementById("password").value;
+            var password_error = document.getElementById("password_error");
+
+            if (password.length < 6) {
+                event.preventDefault();
+                password_error.classList.remove("hidden");
+            } else {
+                password_error.classList.add("hidden");
+            }
+
+        });
+    </script>
 {% endblock %}

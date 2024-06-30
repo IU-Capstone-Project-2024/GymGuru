@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required, current_user
 
 from app import app, login_manager, session
 from forms.login_form import LoginForm
@@ -68,7 +68,7 @@ def test():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html")
+    return render_template("profile.html", user = current_user)
 
 
 @app.route("/curl")
@@ -152,11 +152,11 @@ def register():
     if form.validate_on_submit():
         user = User()
         user.name = form.name.data
+        user.surname = form.surname.data
         user.email = form.email.data
         user.set_password(form.password.data)
         session.add(user)
         session.commit()
-
         return redirect(url_for("login"))
     return render_template("register.html", form=form)
 
