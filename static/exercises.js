@@ -205,7 +205,41 @@ class Exercises {
   }
 
   gen_lunge() {
-    //TODO
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const shoulder_hip_knee_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.knee_left);
+    const shoulder_hip_knee_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.knee_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160) {
+      begin = true;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && this.stage !== "down") {
+      this.stage = "up";
+      stage = this.stage;
+    }
+    if (this.nose.y < this.knee_left.y && hip_knee_ankle_angle_left < 100 && hip_knee_ankle_angle_right < 100 && this.stage === "up" && ((shoulder_hip_knee_angle_left < 120 && shoulder_hip_knee_angle_right > 120) || (shoulder_hip_knee_angle_right < 120 && shoulder_hip_knee_angle_left > 120))) {
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+    if (this.stage === "down" && (Math.abs(this.shoulder_left.x - this.hip_left.x) > (this.euclideanDistance(this.shoulder_left, this.hip_left) / 6))) {
+      this.error = 'STRAIGHTEN BACK';
+      this.updateError();
+    }
+    if (this.stage === "down" && ((shoulder_hip_knee_angle_left < 120 && shoulder_hip_knee_angle_right > 120 && (Math.abs(this.knee_left.x - this.ankle_left.x) > (this.euclideanDistance(this.knee_left, this.ankle_left) / 3))) || (shoulder_hip_knee_angle_right < 120 && shoulder_hip_knee_angle_left > 120 && (Math.abs(this.knee_right.x - this.ankle_right.x) > (this.euclideanDistance(this.knee_right, this.ankle_right) / 3))))) {
+      this.error = 'KNEE EXCEEDS FOOT';
+      this.updateError();
+    }
+    if ((this.stage === "down" && (Math.abs(this.shoulder_left.x - this.hip_left.x) <= (this.euclideanDistance(this.knee_left, this.ankle_left) / 2))) && (this.stage === "down" && ((shoulder_hip_knee_angle_left < 120 && shoulder_hip_knee_angle_right > 120 && (Math.abs(this.knee_left.x - this.ankle_left.x) <= (this.euclideanDistance(this.knee_left, this.ankle_left) / 3))) || (shoulder_hip_knee_angle_right < 120 && shoulder_hip_knee_angle_left > 120 && (Math.abs(this.knee_right.x - this.ankle_right.x) <= (this.euclideanDistance(this.knee_right, this.ankle_right) / 3)))))) {
+      this.error = null;
+      this.updateError();
+    }
   }
 
   gen_v_up() {
