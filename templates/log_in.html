@@ -37,18 +37,20 @@
 
     </form>
 </div>
-    <script>
-        document.getElementById("login_form").addEventListener("submit", function(event) {
-            var password = document.getElementById("password").value;
-            var password_error = document.getElementById("password_error");
 
-            if (password.length < 6) {
-                event.preventDefault();
-                password_error.classList.remove("hidden");
-            } else {
-                password_error.classList.add("hidden");
-            }
+{#    script to show the tip about password length#}
+<script>
+    document.getElementById("login_form").addEventListener("submit", function(event) {
+        var password = document.getElementById("password").value;
+        var password_error = document.getElementById("password_error");
 
-        });
-    </script>
+        if (password.length < 6) {
+            event.preventDefault();
+            password_error.classList.remove("hidden");
+        } else {
+            password_error.classList.add("hidden");
+        }
+
+    });
+</script>
 {% endblock %}
