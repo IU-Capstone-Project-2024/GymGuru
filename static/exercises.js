@@ -243,7 +243,21 @@ class Exercises {
   }
 
   gen_v_up() {
-    //TODO
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160) {
+      begin = true;
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left < 150 && shoulder_hip_ankle_angle_right < 150 && this.nose.y < this.hip_left.y && this.ankle_left.y < this.hip_left.y && this.ankle_right.y < this.hip_right.y && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
   }
 
   gen_raise() {
