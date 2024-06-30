@@ -1,6 +1,7 @@
 const checkKeypoints = () => {
     if (extractedKeypoints.length !== 0) {
         const plank = new Exercises();
+        plankExercise = true;
 
         const updateKeypointsInterval = setInterval(() => {
             plank.updateKeypoints();

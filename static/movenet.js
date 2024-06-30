@@ -28,10 +28,16 @@ let score = 0;
 let bendExercise = false;
 let bend = null;
 
+let plankExercise = false;
+let plank = null;
+
 // Логика завершения упражнения
 finishButton.addEventListener('click', () => {
     if (bendExercise) {
         alert(`Вы завершили с ${bend}!`);
+    }
+    if (plankExercise) {
+        alert(`Вы завершили с ${plank} секунд!`);
     }
     else {
         socket.emit("push_up", score);
