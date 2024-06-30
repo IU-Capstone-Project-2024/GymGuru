@@ -4,23 +4,23 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   build-and-run:
     runs-on: self-hosted
-
+    env:
+        DB_LOGIN: ${{ secrets.DB_LOGIN }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
+      
     - name: Build Docker container
-      run: docker build -t nai1ka/gymguru:latest .
+      run: docker compose build
 
     - name: Stop and remove existing container if it exists
-      run: docker rm -f gymguru &>/dev/null && echo 'Removed old container'
+      run: docker compose down
 
     - name: Run Docker container
-      run: docker run -p 80:1234 -d --name gymguru nai1ka/gymguru:latest
+      run: docker compose up -d
+     

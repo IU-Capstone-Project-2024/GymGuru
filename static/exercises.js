@@ -2,6 +2,9 @@
 class Exercises {
   constructor() {
     this.stage = null;
+    this.error = null;
+    this.startTime = null;
+    this.endTime =  null;
 
     this.keypoints = extractedKeypoints;
     this.nose = this.keypoints[0];
@@ -34,44 +37,328 @@ class Exercises {
     return angle;
   }
 
-  gen_push_up() {
-    const shoulder_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
-    const shoulder_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
-    const back_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.knee_left);
-    const back_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.knee_right);
-    const knee_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
-    const knee_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+  euclideanDistance(a, b) {
+    return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+  }  
 
-    if (shoulder_angle_left <= 120 && shoulder_angle_left >= 30 && shoulder_angle_right <= 120 && shoulder_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && knee_angle_right >= 150 && back_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y) {
+  startTimer() {
+    this.startTime = new Date().getTime();
+  }
+  
+  stopTimer() {
+    this.endTime = new Date().getTime();
+  }
+  
+  timeElapsed() {
+    const timeElapsed = (this.endTime - this.startTime) / 1000;
+    return timeElapsed;
+  }
+
+  updateError() {
+    error = this.error;
+  }
+
+  gen_push_up() {
+    const shoulder_elbow_wrist_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
+    const shoulder_elbow_wrist_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
+    const shoulder_hip_knee_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.knee_left);
+    const shoulder_hip_knee_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.knee_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
+      begin = true;
+    }
+    if (this.wrist_left.y < this.knee_left.y && this.wrist_right.y < this.knee_right.y) {
+      begin = false;
+    }
+    if (shoulder_elbow_wrist_angle_left <= 120 && shoulder_elbow_wrist_angle_left >= 30 && shoulder_elbow_wrist_angle_right <= 120 && shoulder_elbow_wrist_angle_right >= 30 && this.nose.y >= this.shoulder_right.y && hip_knee_ankle_angle_right >= 150 && shoulder_hip_knee_angle_right >= 150 && hip_knee_ankle_angle_left >= 150 && shoulder_hip_knee_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
+      if (this.stage != "down") {
+        this.startTimer();
+      }
       this.stage = "down";
       stage = this.stage;
     }
-    if (back_angle_right < 150) {
+    if (shoulder_hip_knee_angle_right < 150) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'BAD BACK'
+      this.error = 'BAD BACK';
+      this.updateError();
+      this.stopTimer();
     }
-    if (knee_angle_right < 150) {
+    if (hip_knee_ankle_angle_right < 150) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'STRAIGHT LEGS'
+      this.error = 'STRAIGHTEN LEGS'
+      this.updateError();
+      this.stopTimer();
     }
     if (this.wrist_left.y < this.shoulder_left.y || this.wrist_right.y < this.shoulder_right.y) {
       this.stage = "wrong";
       stage = this.stage;
-      error = 'UPSIDE DOWN'
+      this.stopTimer();
     }
-    if (shoulder_angle_left >= 160 && shoulder_angle_right >= 160 && this.stage === "down" && knee_angle_right >= 150 && back_angle_right >= 150  && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y) {
-      this.stage = "up";
-      stage = this.stage;
-      score += 1;
+    if (shoulder_elbow_wrist_angle_left >= 160 && shoulder_elbow_wrist_angle_right >= 160 && this.stage === "down" && hip_knee_ankle_angle_right >= 150 && shoulder_hip_knee_angle_right >= 150 && hip_knee_ankle_angle_left >= 150 && shoulder_hip_knee_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
+      this.stopTimer();
+      if (this.timeElapsed() <= 3) {
+        this.stage = "up";
+        stage = this.stage;
+        score += 1;
+      }
+      else {
+        this.stage = "wrong";
+        stage = this.stage;
+        this.error = 'GO UP QUICKER';
+        this.updateError();
+      }
     }
-    if (back_angle_right >= 150 && knee_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y) {
+    if (shoulder_hip_knee_angle_right >= 150 && hip_knee_ankle_angle_right >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.hip_left.y && this.wrist_right.y > this.hip_right.y) {
       if (this.stage === "wrong") {
         this.stage = '';
         stage = this.stage;
       }
-      error = ''
+      this.error = null;
+      this.updateError();
+    }
+  }
+
+  gen_squat() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const shoulder_hip_knee_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.knee_left);
+    const shoulder_hip_knee_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.knee_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160) {
+      begin = true;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && this.stage !== "down") {
+      this.stage = "up";
+      stage = this.stage;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_knee_angle_left < 100 && shoulder_hip_knee_angle_right < 100 && hip_knee_ankle_angle_left <= 90 && hip_knee_ankle_angle_right <= 90 && this.stage === "up") {
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+    if ((Math.abs(this.knee_left.x - this.ankle_left.x) > (this.euclideanDistance(this.knee_left, this.ankle_left) / 1.8)) && this.stage === "down") {
+      this.error = 'KNEES EXCEED FEET';
+      this.updateError();
+    }
+    if ((Math.abs(this.knee_left.x - this.ankle_left.x) <= (this.euclideanDistance(this.knee_left, this.ankle_left) / 1.8)) && this.stage === "down") {
+      this.error = null;
+      this.updateError();
+    }
+  }
+
+  gen_curl() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const shoulder_elbow_wrist_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
+    const shoulder_elbow_wrist_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y) {
+      begin = true;
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && this.elbow_left.y < this.wrist_left.y && this.elbow_right.y < this.wrist_right.y && shoulder_elbow_wrist_angle_left >= 150 && shoulder_elbow_wrist_angle_right >= 150) {
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && this.elbow_left.y > this.wrist_left.y && this.elbow_right.y > this.wrist_right.y && shoulder_elbow_wrist_angle_left < 80 && shoulder_elbow_wrist_angle_right < 80 && this.stage === 'down') {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+    if (shoulder_hip_ankle_angle_left < 160 || shoulder_hip_ankle_angle_right < 160) {
+      this.error = 'STRAIGHTEN BACK';
+      this.updateError();
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160) {
+      this.error = null;
+      this.updateError();
+    }
+  }
+
+  gen_crunch() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (hip_knee_ankle_angle_right < 120 && hip_knee_ankle_angle_left < 120 && this.knee_left.y < this.shoulder_left.y && this.knee_right.y < this.shoulder_right.y && this.knee_left.y < this.hip_left.y && this.knee_right.y < this.hip_right.y)  {
+      begin = true;
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left < 120 && hip_knee_ankle_angle_right < 120 && this.knee_left.y < this.shoulder_left.y && this.knee_right.y < this.shoulder_right.y && this.knee_left.y < this.hip_left.y && this.knee_right.y < this.hip_right.y) {
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left < 120 && shoulder_hip_ankle_angle_right < 120 && hip_knee_ankle_angle_left < 120 && hip_knee_ankle_angle_right < 120 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && this.knee_left.y < this.hip_left.y && this.knee_right.y < this.hip_right.y && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+  }
+
+  gen_lunge() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const shoulder_hip_knee_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.knee_left);
+    const shoulder_hip_knee_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.knee_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160) {
+      begin = true;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && this.stage !== "down") {
+      this.stage = "up";
+      stage = this.stage;
+    }
+    if (this.nose.y < this.knee_left.y && hip_knee_ankle_angle_left < 100 && hip_knee_ankle_angle_right < 100 && this.stage === "up" && ((shoulder_hip_knee_angle_left < 120 && shoulder_hip_knee_angle_right > 120) || (shoulder_hip_knee_angle_right < 120 && shoulder_hip_knee_angle_left > 120))) {
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (this.nose.y < this.knee_left.y && shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+    if (this.stage === "down" && (Math.abs(this.shoulder_left.x - this.hip_left.x) > (this.euclideanDistance(this.shoulder_left, this.hip_left) / 6))) {
+      this.error = 'STRAIGHTEN BACK';
+      this.updateError();
+    }
+    if (this.stage === "down" && ((shoulder_hip_knee_angle_left < 120 && shoulder_hip_knee_angle_right > 120 && (Math.abs(this.knee_left.x - this.ankle_left.x) > (this.euclideanDistance(this.knee_left, this.ankle_left) / 3))) || (shoulder_hip_knee_angle_right < 120 && shoulder_hip_knee_angle_left > 120 && (Math.abs(this.knee_right.x - this.ankle_right.x) > (this.euclideanDistance(this.knee_right, this.ankle_right) / 3))))) {
+      this.error = 'KNEE EXCEEDS FOOT';
+      this.updateError();
+    }
+    if ((this.stage === "down" && (Math.abs(this.shoulder_left.x - this.hip_left.x) <= (this.euclideanDistance(this.knee_left, this.ankle_left) / 2))) && (this.stage === "down" && ((shoulder_hip_knee_angle_left < 120 && shoulder_hip_knee_angle_right > 120 && (Math.abs(this.knee_left.x - this.ankle_left.x) <= (this.euclideanDistance(this.knee_left, this.ankle_left) / 3))) || (shoulder_hip_knee_angle_right < 120 && shoulder_hip_knee_angle_left > 120 && (Math.abs(this.knee_right.x - this.ankle_right.x) <= (this.euclideanDistance(this.knee_right, this.ankle_right) / 3)))))) {
+      this.error = null;
+      this.updateError();
+    }
+  }
+
+  gen_v_up() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160) {
+      begin = true;
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left < 150 && shoulder_hip_ankle_angle_right < 150 && this.nose.y < this.hip_left.y && this.ankle_left.y < this.hip_left.y && this.ankle_right.y < this.hip_right.y && this.stage === "down") {
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+  }
+
+  gen_raise() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const shoulder_elbow_wrist_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
+    const shoulder_elbow_wrist_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
+    const hip_shoulder_wrist_angle_left = this.calculate_angle(this.hip_left, this.shoulder_left, this.wrist_left);
+    const hip_shoulder_wrist_angle_right = this.calculate_angle(this.hip_right, this.shoulder_right, this.wrist_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && this.elbow_left.y < this.wrist_left.y && this.elbow_right.y < this.wrist_right.y && shoulder_elbow_wrist_angle_left >= 150 && shoulder_elbow_wrist_angle_right >= 150 && hip_shoulder_wrist_angle_left < 30 && hip_shoulder_wrist_angle_right < 30) {
+      begin = true;
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && shoulder_elbow_wrist_angle_left >= 150 && shoulder_elbow_wrist_angle_right >= 150 && hip_shoulder_wrist_angle_left > 70 && hip_shoulder_wrist_angle_right > 70 && this.stage === 'down') {
+      console.log(hip_shoulder_wrist_angle_left, hip_shoulder_wrist_angle_right);
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
+  }
+
+  gen_bend() {
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (hip_knee_ankle_angle_left >= 170 && shoulder_hip_ankle_angle_right >= 170 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y) {
+      begin = true;
+    }
+    if (hip_knee_ankle_angle_left >= 170 && hip_knee_ankle_angle_right >= 170 && shoulder_hip_ankle_angle_right >= 170 && shoulder_hip_ankle_angle_left >= 170 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y) {
+      this.stage = "up";
+      stage = this.stage;
+    }
+    if (hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && ((this.ankle_left.y - this.wrist_left.y) <= (this.euclideanDistance(this.elbow_left, this.wrist_left) / 2)) && ((this.ankle_left.y - this.wrist_left.y) > this.euclideanDistance(this.elbow_left, this.wrist_left) / 4) && this.knee_left.y < this.wrist_left.y && this.knee_right.y < this.wrist_right.y && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && bend !== 'fists' && bend !== 'palms') {
+      this.stage = "down";
+      stage = this.stage;
+      bend = 'fingers';
+    }
+    if (hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && ((this.ankle_left.y - this.wrist_left.y) <= this.euclideanDistance(this.elbow_left, this.wrist_left) / 4) && ((this.ankle_left.y - this.wrist_left.y) > this.euclideanDistance(this.elbow_left, this.wrist_left) / 6) && this.knee_left.y < this.wrist_left.y && this.knee_right.y < this.wrist_right.y && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && bend !== 'palms') {
+      this.stage = "down";
+      stage = this.stage;
+      bend = 'fists';
+    }
+    if (hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160 && ((this.ankle_left.y - this.wrist_left.y) <= this.euclideanDistance(this.elbow_left, this.wrist_left) / 6) && this.knee_left.y < this.wrist_left.y && this.knee_right.y < this.wrist_right.y && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y) {
+      this.stage = "down";
+      stage = this.stage;
+      bend = 'palms';
+    }
+    if (hip_knee_ankle_angle_left < 160 || hip_knee_ankle_angle_right < 160) {
+      this.error = 'BAD KNEES';
+      this.updateError();
+    }
+    if (hip_knee_ankle_angle_left >= 160 && hip_knee_ankle_angle_right >= 160) {
+      this.error = null;
+      this.updateError();
+    }
+  }
+
+  gen_plank() {
+    const shoulder_elbow_wrist_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
+    const shoulder_elbow_wrist_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
+    const shoulder_hip_knee_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.knee_left);
+    const shoulder_hip_knee_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.knee_right);
+    const hip_knee_ankle_angle_left = this.calculate_angle(this.hip_left, this.knee_left, this.ankle_left);
+    const hip_knee_ankle_angle_right = this.calculate_angle(this.hip_right, this.knee_right, this.ankle_right);
+
+    if (this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
+      begin = true;
+    }
+    if (this.wrist_left.y < this.knee_left.y && this.wrist_right.y < this.knee_right.y) {
+      begin = false;
+    }
+    if (this.stage !== "up" && shoulder_elbow_wrist_angle_left >= 160 && shoulder_elbow_wrist_angle_right >= 160 && hip_knee_ankle_angle_right >= 150 && hip_knee_ankle_angle_left >= 150 && shoulder_hip_knee_angle_right >= 150 && shoulder_hip_knee_angle_left >= 150 && this.wrist_left.y > this.shoulder_left.y && this.wrist_right.y > this.shoulder_right.y && this.wrist_left.y > this.knee_left.y && this.wrist_right.y > this.knee_right.y) {
+      this.stage = "up";
+      stage = this.stage;
+      this.startTimer();
+    }
+    if (this.stage === "up") {
+      this.stopTimer();
+      plank = this.timeElapsed();
+    }
+    if (this.stage === "up" && (shoulder_elbow_wrist_angle_left <= 120 || shoulder_elbow_wrist_angle_right <= 120 || this.wrist_left.y < this.shoulder_left.y || this.wrist_right.y < this.shoulder_right.y || this.knee_left.y >= this.ankle_left.y || this.knee_right.y >= this.ankle_right.y)) {
+      this.stage = "down";
+      stage = this.stage;
+      this.stopTimer();
+      plank = this.timeElapsed();
+    }
+    if (shoulder_hip_knee_angle_right < 150) {
+      this.error = 'BAD BACK';
+      this.updateError();
+    }
+    if (hip_knee_ankle_angle_right < 150) {
+      this.error = 'STRAIGHTEN LEGS'
+      this.updateError();
+    }
+    if (shoulder_hip_knee_angle_right >= 150 && hip_knee_ankle_angle_right >= 150) {
+      this.error = null;
+      this.updateError();
     }
   }
 
