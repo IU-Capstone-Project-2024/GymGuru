@@ -39,11 +39,6 @@ def test():
     return render_template("test.html")
 
 
-@app.route("/profile")
-def profile():
-    return render_template("profile.html")
-
-
 @app.route("/exercises")
 def exercises():
     return render_template("exercises.html")
