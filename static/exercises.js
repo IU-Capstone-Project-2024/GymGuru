@@ -261,7 +261,24 @@ class Exercises {
   }
 
   gen_raise() {
-    //TODO
+    const shoulder_hip_ankle_angle_left = this.calculate_angle(this.shoulder_left, this.hip_left, this.ankle_left);
+    const shoulder_hip_ankle_angle_right = this.calculate_angle(this.shoulder_right, this.hip_right, this.ankle_right);
+    const shoulder_elbow_wrist_angle_left = this.calculate_angle(this.shoulder_left, this.elbow_left, this.wrist_left);
+    const shoulder_elbow_wrist_angle_right = this.calculate_angle(this.shoulder_right, this.elbow_right, this.wrist_right);
+    const hip_shoulder_wrist_angle_left = this.calculate_angle(this.hip_left, this.shoulder_left, this.wrist_left);
+    const hip_shoulder_wrist_angle_right = this.calculate_angle(this.hip_right, this.shoulder_right, this.wrist_right);
+
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && this.elbow_left.y < this.wrist_left.y && this.elbow_right.y < this.wrist_right.y && shoulder_elbow_wrist_angle_left >= 150 && shoulder_elbow_wrist_angle_right >= 150 && hip_shoulder_wrist_angle_left < 30 && hip_shoulder_wrist_angle_right < 30) {
+      begin = true;
+      this.stage = "down";
+      stage = this.stage;
+    }
+    if (shoulder_hip_ankle_angle_left >= 160 && shoulder_hip_ankle_angle_right >= 160 && this.shoulder_left.y < this.knee_left.y && this.shoulder_right.y < this.knee_right.y && shoulder_elbow_wrist_angle_left >= 150 && shoulder_elbow_wrist_angle_right >= 150 && hip_shoulder_wrist_angle_left > 70 && hip_shoulder_wrist_angle_right > 70 && this.stage === 'down') {
+      console.log(hip_shoulder_wrist_angle_left, hip_shoulder_wrist_angle_right);
+      this.stage = "up";
+      stage = this.stage;
+      score += 1;
+    }
   }
 
   gen_bend() {
