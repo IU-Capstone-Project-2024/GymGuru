@@ -3,3 +3,4 @@ sqlalchemy
 flask-login
 psycopg2
 email_validator
+flask_socketio

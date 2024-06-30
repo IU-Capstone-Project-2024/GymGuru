@@ -1,4 +1,3 @@
-
 const checkKeypoints = () => {
     if (extractedKeypoints.length !== 0) {
         const push_up = new Exercises();
