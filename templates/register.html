@@ -12,7 +12,7 @@
             </div>
         {% endif %}
     {% endwith %}
-    <form action="" method="post">
+    <form id="registration_form" action="" method="post">
         <!--        prevent CSRF attack-->
         {{ form.hidden_tag() }}
 
@@ -33,7 +33,8 @@
 
         <div class="mb-4">
             <label for="password" class="block text-gray-700">Password</label>
-            <input type="password" name="password" required class="w-full py-2 px-3 border rounded focus:outline-none focus:border-custom_light_blue">
+            <input type="password" id="password" name="password" required class="w-full py-2 px-3 border rounded focus:outline-none focus:border-custom_light_blue">
+            <small id="password_error" class="text-gray-500">Password should be at least 6 characters long</small>
         </div>
         <p class="mt-4 text-gray-700">Have account? <a href="{{ url_for('login') }}" class="text-custom_blue">Log in</a></p>
         <div class="mt-6 text-center">
@@ -41,4 +42,18 @@
         </div>
     </form>
 </div>
+ <script>
+    document.getElementById("registration_form").addEventListener("submit", function(event) {
+        var password = document.getElementById("password").value;
+        var password_error = document.getElementById("password_error");
+
+        if (password.length < 6) {
+            event.preventDefault();
+            password_error.style.color = "red";
+        } else {
+            password_error.style.color = "";
+        }
+
+    });
+</script>
 {% endblock %}

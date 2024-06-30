@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required, current_user
 
 from app import app, login_manager, session
 from forms.fittest_step_1_form import FittestStep1Form
@@ -81,6 +81,10 @@ def v_up_crunch_preview():
     return render_template('v_up_crunch_preview.html')
 
 
+@app.route("/profile")
+def profile():
+    return render_template("profile.html", user = current_user)
+
 # Define a route for the lateral raise preview page
 @app.route('/lateral_raise_preview')
 def lateral_raise_preview():
@@ -97,6 +101,7 @@ def forward_bend_preview():
 @app.route('/plank_preview')
 def plank_preview():
     return render_template('plank_preview.html')
+
 
 
 @app.route("/curl")
@@ -194,11 +199,11 @@ def register():
     if form.validate_on_submit():
         user = User()
         user.name = form.name.data
+        user.surname = form.surname.data
         user.email = form.email.data
         user.set_password(form.password.data)
         session.add(user)
         session.commit()
-
         return redirect(url_for("login"))
     return render_template("register.html", form=form)
 
