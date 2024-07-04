@@ -2,6 +2,7 @@ const localVideo = document.getElementById('localVideo');
 const resultCanvas = document.getElementById('resultCanvas');
 const scoreElement = document.getElementById('score');
 const finishButton = document.getElementById('finishButton');
+
 const ctx = resultCanvas.getContext('2d');
 const videoWidth = 1280;
 const videoHeight = 640;
@@ -32,7 +33,8 @@ let plankExercise = false;
 let plank = null;
 
 // Логика завершения упражнения
-finishButton.addEventListener('click', () => {
+if(finishButton!=null){
+    finishButton.addEventListener('click', () => {
     if (bendExercise) {
         alert(`Вы завершили с ${bend}!`);
     }
@@ -44,6 +46,9 @@ finishButton.addEventListener('click', () => {
         alert(`Вы завершили с ${score} баллами!`);
     }
 });
+}
+
+
 
 function drawFPS() {
     ctx.fillStyle = 'green';
