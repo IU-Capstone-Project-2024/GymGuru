@@ -26,6 +26,8 @@ session = Session()
 if __name__ == "__main__":
     socketio.run(app, "0.0.0.0", port=1234, debug=True, allow_unsafe_werkzeug=True)
 
+user_result = dict()
+
 
 @socketio.on('push_up')
 def handle_message(counter):
@@ -35,3 +37,21 @@ def handle_message(counter):
     session.query(User).filter(User.id == user_id).update(
         {User.curl_counter: user.curl_counter + counter})
     session.commit()
+
+
+@socketio.on('step_2')
+def handle_message(counter):
+    user_id = current_user.get_id()
+    user_result[user_id].push_up = counter
+
+
+@socketio.on('step_3')
+def handle_message(counter):
+    user_id = current_user.get_id()
+    user_result[user_id].crunches = counter
+
+
+@socketio.on('step_4')
+def handle_message(counter):
+    user_id = current_user.get_id()
+    user_result[user_id].forward_bend = counter

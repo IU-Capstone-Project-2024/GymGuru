@@ -1,11 +1,13 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 
-from app import app, login_manager, session
+from app import app, login_manager, session, user_result
 from forms.fittest_step_1_form import FittestStep1Form
 from forms.login_form import LoginForm
 from forms.register_form import RegistrationForm
+
 from models.User import User
+from models.UserFittestResult import UserFittestResult
 
 
 @app.route("/")
@@ -78,7 +80,8 @@ def v_up_crunch_preview():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", user = current_user)
+    return render_template("profile.html", user=current_user)
+
 
 # Define a route for the lateral raise preview page
 @app.route('/lateral_raise_preview')
@@ -96,7 +99,6 @@ def forward_bend_preview():
 @app.route('/plank_preview')
 def plank_preview():
     return render_template('plank_preview.html')
-
 
 
 @app.route("/curl")
@@ -151,7 +153,45 @@ def test_preview():
 
 @app.route("/test_results")
 def test_results():
-    return render_template("test_results.html")
+    # TODO: REFACTOR!!!
+    user_id = current_user.get_id()
+    result = user_result[user_id]
+    forward_bend = result.forward_bend
+    forward_bend_points = 0
+
+    push_up = result.push_up
+    # TODO check for man or woman
+    push_up_points = 0
+    if (push_up >= 35):
+        push_up_points = 25
+    elif (push_up >= 15):
+        push_up_points = 15
+    elif (push_up >= 10):
+        push_up_points = 10
+
+    crunches = result.crunches
+    # TODO check for man or woman
+    crunches_points = 0
+    if (crunches >= 43):
+        crunches_points = 25
+    elif (crunches >= 35):
+        crunches_points = 15
+    elif (crunches >= 20):
+        crunches_points = 10
+
+    print(push_up_points, crunches_points, forward_bend_points)
+
+    user = session.query(User).get(user_id)
+    session.query(User).filter(User.id == user_id).update(
+        {User.push_up_counter: user.push_up_counter + push_up,
+         User.crunch_counter: user.crunch_counter + crunches})
+    session.commit()
+    user_result.pop(user_id)
+    return render_template("test_results.html", result={
+        "push_up": push_up_points,
+        "crunches": crunches_points,
+        "forward_bend": forward_bend_points
+    })
 
 
 @app.route('/test_step_1', methods=['GET', 'POST'])
@@ -160,7 +200,7 @@ def test_step_1():
     if request.method == "POST" and form.validate_on_submit():
         height = form.height.data
         weight = form.weight.data
-        print(height, weight)
+        user_result[current_user.get_id()] = UserFittestResult(current_user.get_id(), height, weight, 0, 0, 0)
         return redirect(url_for("test_step_2"))
     return render_template("test_step_1.html", form=form)
 
