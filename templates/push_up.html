@@ -38,19 +38,20 @@
     <script src="{{ url_for('static', filename='push_up.js') }}"></script>
 
     <script>
+        // add loading functionality while camera is not ready
         function startCamera() {
-            const video = document.getElementById('localVideo');
-            const loader = document.getElementById('loader');
-            const content = document.getElementById('content');
+            const video_element = document.getElementById('localVideo');
+            const loader_element = document.getElementById('loader');
+            const content_element = document.getElementById('content');
 
             navigator.mediaDevices.getUserMedia({video: true})
                 .then(
                     (stream)=> {
-                        video.srcObject = stream;
-                        video.onloadedmetadata = () =>{
-                            video.play();
-                            loader.classList.add('hidden');
-                            content.classList.remove('hidden');
+                        video_element.srcObject = stream;
+                        video_element.onloadedmetadata = () =>{
+                            video_element.play();
+                            loader_element.classList.add('hidden');
+                            content_element.classList.remove('hidden');
                         };
                 })
                 .catch((error) =>{
