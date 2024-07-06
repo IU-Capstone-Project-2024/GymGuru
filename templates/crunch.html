@@ -14,12 +14,12 @@
         </div>
 
         <div class="flex flex-row items-center justify-center m-8">
-            <div id="score" class="text-4xl font-bold text-custom_dark_blue">Score: <span id="scoreValue"></span></div>
+            <div id="score" class="text-2xl font-bold text-custom_dark_blue">Score: <span id="scoreValue"></span></div>
 
-            <button id="finishButton"
-                    class=" ml-16 px-6 py-3 bg-custom_light_blue text-gray-700 py-2 px-4 rounded md:mt-0 mt-2 block md:inline hover:bg-custom_blue">
+            <a href="{{ url_for('exercises') }}"><button id="finishButton"
+                    class="bg-custom_light_blue ml-4 hover:bg-custom_blue inline-block text-gray-700 py-2 px-4 rounded px-8">
                 Finish
-            </button>
+            </button></a>
         </div>
     </div>
 
