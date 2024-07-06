@@ -33,16 +33,16 @@
             class="hidden md:flex md:flex-row flex-col space-x-0 md:space-x-4 md:mt-0 mt-4"> <!-- Menu container, for mobile hidden by default -->
             {% if current_user.is_authenticated %}
             <!-- Links shown when the user is authenticated -->
-            <a href="{{url_for('rating')}}" class="text-gray-600 py-2 px-4  md:mt-0 mt-2 block md:inline">Rating</a>
-            <a href="{{url_for('exercises')}}" class="text-gray-600 py-2 px-4  md:mt-0 mt-2 block md:inline">Exercises</a>
-            <a href="{{url_for('test_preview')}}" class="text-gray-600 py-2 px-4  md:mt-0 mt-2 block md:inline">Test</a>
-            <a href="{{url_for('profile')}}" class="text-gray-600  py-2 px-4  md:mt-0 mt-2 block md:inline">Profile</a>
-            <a href="{{url_for('logout')}}" class="text-custom_dark_blue py-2 px-4  md:mt-0 mt-2 block md:inline">Logout</a>
+            <a href="{{url_for('rating')}}" class="text-gray-700 py-2 px-4  md:mt-0 mt-2 block md:inline hover:text-custom_light_blue">Rating</a>
+            <a href="{{url_for('exercises')}}" class="text-gray-700 py-2 px-4  md:mt-0 mt-2 block md:inline hover:text-custom_light_blue">Exercises</a>
+            <a href="{{url_for('test_preview')}}" class="text-gray-700 py-2 px-4  md:mt-0 mt-2 block md:inline hover:text-custom_light_blue">Test</a>
+            <a href="{{url_for('profile')}}" class="text-gray-700  py-2 px-4  md:mt-0 mt-2 block md:inline hover:text-custom_light_blue">Profile</a>
+            <a href="{{url_for('logout')}}" class="bg-custom_light_blue text-gray-700 py-2 px-4 rounded md:mt-0 mt-2 block md:inline hover:bg-custom_blue">Log out</a>
             {% else %}
             <!-- Links shown when the user is not authenticated -->
-            <a href="{{url_for('rating')}}" class="text-gray-700 py-2 px-4  md:mt-0 mt-2 block md:inline">Rating</a>
-            <a href="{{url_for('login')}}" class="text-custom_dark_blue py-2 px-4  md:mt-0 mt-2 block md:inline">Login</a>
-            <a href="{{url_for('register')}}" class="bg-custom_light_blue text-gray-700 py-2 px-4 rounded md:mt-0 mt-2 block md:inline">Register</a>
+            <a href="{{url_for('rating')}}" class="text-gray-700 py-2 px-4  md:mt-0 mt-2 block md:inline hover:text-custom_light_blue">Rating</a>
+            <a href="{{url_for('login')}}" class="bg-custom_light_blue text-gray-700 py-2 px-4 rounded md:mt-0 mt-2 block md:inline hover:bg-custom_blue">Log in</a>
+            <a href="{{url_for('register')}}" class="bg-custom_light_blue text-gray-700 py-2 px-4 rounded md:mt-0 mt-2 block md:inline hover:bg-custom_blue">Register</a>
             {% endif %}
         </div>
     </div>

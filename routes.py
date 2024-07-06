@@ -66,13 +66,11 @@ def crunch_preview():
     return render_template("crunch_preview.html")
 
 
-# Define a route for the lunge preview page
 @app.route('/lunge_preview')
 def lunge_preview():
     return render_template('lunge_preview.html')
 
 
-# Define a route for the V-up crunch preview page
 @app.route('/v_up_crunch_preview')
 def v_up_crunch_preview():
     return render_template('v_up_crunch_preview.html')
@@ -83,19 +81,16 @@ def profile():
     return render_template("profile.html", user=current_user)
 
 
-# Define a route for the lateral raise preview page
 @app.route('/lateral_raise_preview')
 def lateral_raise_preview():
     return render_template('lateral_raise_preview.html')
 
 
-# Define a route for the forward bends preview page
 @app.route('/forward_bend_preview')
 def forward_bend_preview():
     return render_template('forward_bend_preview.html')
 
 
-# Define a route for the plank preview page
 @app.route('/plank_preview')
 def plank_preview():
     return render_template('plank_preview.html')
@@ -212,9 +207,7 @@ def test_step_2():
 
 @app.route("/test_step_3")
 def test_step_3():
-    points = [10, 15, 25]
-    scores = [10, 15, 20]
-    return render_template('test_step_3.html', points=points, scores=scores)
+    return render_template('test_step_3.html')
 
 
 @app.route("/test_step_4")
