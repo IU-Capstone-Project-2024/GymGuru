@@ -14,7 +14,7 @@
         </div>
 
         <div class="flex flex-row items-center justify-center m-8">
-            <div id="score" class="text-2xl font-bold text-custom_dark_blue">State: <span id="scoreValue"></span></div>
+            <div id="score" class="text-2xl font-bold text-custom_dark_blue">State: <span id="stateValue"></span></div>
 
             <a href="{{ url_for('exercises') }}"><button id="finishButton"
                     class="bg-custom_light_blue ml-4 hover:bg-custom_blue inline-block text-gray-700 py-2 px-4 rounded px-8">
@@ -24,11 +24,11 @@
     </div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
-    <script src="{{ url_for('static', filename='movenet.js') }}"></script>
+    <script src="{{ url_for('static', filename='mediapipe.js') }}"></script>
     <script src="{{ url_for('static', filename='exercises.js') }}"></script>
     <script src="{{ url_for('static', filename='bend.js') }}"></script>
 
