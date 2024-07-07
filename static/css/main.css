@@ -880,6 +880,10 @@ video {
   height: 100%;
 }
 
+
+.h-screen {
+  height: 100vh;
+
 .h-16 {
   height: 4rem;
 }
@@ -890,6 +894,7 @@ video {
 
 .h-20 {
   height: 5rem;
+
 }
 
 .max-h-screen {
@@ -986,6 +991,16 @@ video {
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 .cursor-pointer {
@@ -1178,6 +1193,11 @@ video {
   background-color: rgb(188 197 214 / var(--tw-bg-opacity));
 }
 
+.bg-custom_dark_blue {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 49 108 / var(--tw-bg-opacity));
+}
+
 .bg-custom_light_blue {
   --tw-bg-opacity: 1;
   background-color: rgb(211 233 255 / var(--tw-bg-opacity));
@@ -1211,11 +1231,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-custom_dark_blue {
-  --tw-bg-opacity: 1;
-  background-color: rgb(15 49 108 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -1427,6 +1442,11 @@ video {
   color: rgb(211 233 255 / var(--tw-text-opacity));
 }
 
+.text-gray-100 {
+  --tw-text-opacity: 1;
+  color: rgb(243 244 246 / var(--tw-text-opacity));
+}
+
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -1460,11 +1480,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-gray-100 {
-  --tw-text-opacity: 1;
-  color: rgb(243 244 246 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -1532,21 +1547,6 @@ video {
 .hover\:bg-custom_light_blue:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(211 233 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-custom_dark_blue:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(15 49 108 / var(--tw-bg-opacity));
-}
-
-.hover\:text-blue-700:hover {
-  --tw-text-opacity: 1;
-  color: rgb(29 78 216 / var(--tw-text-opacity));
-}
-
-.hover\:text-custom_dark_blue:hover {
-  --tw-text-opacity: 1;
-  color: rgb(15 49 108 / var(--tw-text-opacity));
 }
 
 .hover\:text-custom_light_blue:hover {
