@@ -131,8 +131,7 @@ async function init() {
                         hands.forEach(hand => {
                             handKeypoints.push(hand.keypoints);
                         });
-                        extractedHandKeypoints = handKeypoints;
-                        console.log(extractedHandKeypoints);
+                        extractedHandKeypoints = handKeypoints[0].concat(handKeypoints[1]);
 
                         // Draw hand keypoints
                         handKeypoints.forEach(hand => {
