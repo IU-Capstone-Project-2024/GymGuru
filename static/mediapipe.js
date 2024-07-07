@@ -10,6 +10,7 @@ resultCanvas.width = videoWidth;
 resultCanvas.height = videoHeight;
 
 let extractedKeypoints = [];
+let extractedHandKeypoints = [];
 let begin = false;
 let stage = '';
 let previousSound = null;
@@ -75,12 +76,18 @@ function speakError(text) {
 
 async function init() {
     // Initialize pose detection model
-    const model = poseDetection.SupportedModels.BlazePose;
-    const detectorConfig = {
-    runtime: 'mediapipe',
-    solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose'
-    };
-    detector = await poseDetection.createDetector(model, detectorConfig);
+    const poseModel = poseDetection.SupportedModels.BlazePose;
+    const handModel = handPoseDetection.SupportedModels.MediaPipeHands;
+    
+    const poseDetector = await poseDetection.createDetector(poseModel, {
+        runtime: 'mediapipe',
+        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose'
+        });
+    const handDetector = await handPoseDetection.createDetector(handModel, {
+        runtime: 'mediapipe',
+        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/hands',
+        modelType: 'full'
+      });
 
     // Get access to the mediapipe_full with specified width and height
     const constraints = {
@@ -99,7 +106,7 @@ async function init() {
             localVideo.addEventListener('loadedmetadata', () => {
                 setInterval(async () => {
                     ctx.drawImage(localVideo, 0, 0, resultCanvas.width, resultCanvas.height);
-                    const poses = await detector.estimatePoses(localVideo);
+                    const poses = await poseDetector.estimatePoses(localVideo);
                     if (poses.length > 0) {
                         let keypoints = poses[0].keypoints;
                         extractedKeypoints = keypoints;
@@ -116,6 +123,26 @@ async function init() {
 
                         // Draw lines between keypoints
                         drawSkeleton(keypoints, ctx);
+                    }
+
+                    const hands = await handDetector.estimateHands(localVideo);
+                    if (hands.length > 0) {
+                        let handKeypoints = [];
+                        hands.forEach(hand => {
+                            handKeypoints.push(hand.keypoints);
+                        });
+                        extractedHandKeypoints = handKeypoints;
+                        console.log(extractedHandKeypoints);
+
+                        // Draw hand keypoints
+                        handKeypoints.forEach(hand => {
+                            hand.forEach(keypoint => {
+                              ctx.beginPath();
+                              ctx.arc(keypoint.x, keypoint.y, 3, 0, 2 * Math.PI);
+                              ctx.fillStyle = 'blue';
+                              ctx.fill();
+                            });
+                        });
                     }
 
                     // Update FPS calculation
