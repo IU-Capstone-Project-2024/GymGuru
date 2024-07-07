@@ -1,9 +1,6 @@
 const checkKeypoints = () => {
     if (extractedKeypoints.length !== 0) {
-        const bend = new Exercises();
-
-        bendExercise = true;
-        console.log(bendExercise)
+        const bend = new AdvancedExercises();
 
         const updateKeypointsInterval = setInterval(() => {
             bend.updateKeypoints();
