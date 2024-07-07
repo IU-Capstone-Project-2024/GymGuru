@@ -10,6 +10,7 @@ resultCanvas.width = videoWidth;
 resultCanvas.height = videoHeight;
 
 let extractedKeypoints = [];
+let extractedHandKeypoints = [];
 let begin = false;
 let stage = '';
 let previousSound = null;
@@ -20,26 +21,16 @@ socket.on('connect', function () {
     console.log('Connected to server')
 });
 
-// Variables to calculate FPS
 let lastFrameTime = performance.now();
 let frameCount = 0;
 let fps = 0;
 let score = 0;
+let bend = null;
 
-let plankExercise = false;
-let plank = null;
-
-// Логика завершения упражнения
-if(finishButton!=null){
+if (finishButton != null) {
     finishButton.addEventListener('click', () => {
-    if (plankExercise) {
-        alert(`Вы завершили с ${plank} секунд!`);
-    }
-    else {
-        socket.emit("push_up", score);
-        alert(`Вы завершили с ${score} баллами!`);
-    }
-});
+        ialert(`Вы завершили с ${bend}!`);
+    });
 }
 
 function drawFPS() {
@@ -85,9 +76,20 @@ function speakError(text) {
 
 async function init() {
     // Initialize pose detection model
-    const detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet);
+    const poseModel = poseDetection.SupportedModels.BlazePose;
+    const handModel = handPoseDetection.SupportedModels.MediaPipeHands;
+    
+    const poseDetector = await poseDetection.createDetector(poseModel, {
+        runtime: 'mediapipe',
+        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose'
+        });
+    const handDetector = await handPoseDetection.createDetector(handModel, {
+        runtime: 'mediapipe',
+        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/hands',
+        modelType: 'full'
+      });
 
-    // Get access with specified width and height
+    // Get access to the mediapipe_full with specified width and height
     const constraints = {
         video: {
             width: videoWidth,
@@ -104,7 +106,7 @@ async function init() {
             localVideo.addEventListener('loadedmetadata', () => {
                 setInterval(async () => {
                     ctx.drawImage(localVideo, 0, 0, resultCanvas.width, resultCanvas.height);
-                    const poses = await detector.estimatePoses(localVideo);
+                    const poses = await poseDetector.estimatePoses(localVideo);
                     if (poses.length > 0) {
                         let keypoints = poses[0].keypoints;
                         extractedKeypoints = keypoints;
@@ -121,6 +123,25 @@ async function init() {
 
                         // Draw lines between keypoints
                         drawSkeleton(keypoints, ctx);
+                    }
+
+                    const hands = await handDetector.estimateHands(localVideo);
+                    if (hands.length > 0) {
+                        let handKeypoints = [];
+                        hands.forEach(hand => {
+                            handKeypoints.push(hand.keypoints);
+                        });
+                        extractedHandKeypoints = handKeypoints[0].concat(handKeypoints[1]);
+
+                        // Draw hand keypoints
+                        handKeypoints.forEach(hand => {
+                            hand.forEach(keypoint => {
+                              ctx.beginPath();
+                              ctx.arc(keypoint.x, keypoint.y, 3, 0, 2 * Math.PI);
+                              ctx.fillStyle = 'blue';
+                              ctx.fill();
+                            });
+                        });
                     }
 
                     // Update FPS calculation
@@ -146,29 +167,11 @@ async function init() {
 }
 
 function drawSkeleton(keypoints, ctx) {
-    // 0 - nose
-    // 1 - leftEye
-    // 2 - rightEye
-    // 3 - leftEar
-    // 4 - rightEar
-    // 5 - leftShoulder
-    // 6 - rightShoulder
-    // 7 - leftElbow
-    // 8 - rightElbow
-    // 9 - leftWrist
-    // 10 - rightWrist
-    // 11 - leftHip
-    // 12 - rightHip
-    // 13 - leftKnee
-    // 14 - rightKnee
-    // 15 - leftAnkle
-    // 16 - rightAnkle
     const adjacentPairs = [
-
-        [6, 8], [8, 10],
-        [5, 7], [7, 9],
         [11, 13], [13, 15],
-        [12, 14], [14, 16]
+        [12, 14], [14, 16],
+        [23, 25], [25, 27], [27, 29], [27, 31], [29, 31],
+        [24, 26], [26, 28], [28, 30], [28, 32], [30, 32]
     ];
 
     adjacentPairs.forEach(pair => {

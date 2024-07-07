@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="flex flex-col items-center justify-center min-h-screen bg-white-200 text-white">
-        <div id="camera" class="h-8/12 w-8/12 px-4 pt-2 pb-2">
+        <div id="camera" class="h-1/2 w-1/2">
             <canvas id="resultCanvas" class="w-full h-full object-cover"></canvas>
         </div>
         <div id="camera" class="hidden">
@@ -14,12 +14,12 @@
         </div>
 
         <div class="flex flex-row items-center justify-center m-8">
-            <div id="score" class="text-3xl font-bold text-blue-700 pr-8">Score: <span id="scoreValue">0</span></div>
-            <div id="points" class="text-3xl font-bold text-blue-700 pr-8">Points: <span id="pointsValue">0</span></div>
+            <div id="score" class="text-2xl font-bold text-custom_dark_blue pr-8">Score: <span id="scoreValue">0</span></div>
+            <div id="points" class="text-2xl font-bold text-custom_dark_blue pr-8">Points: <span id="pointsValue">0</span></div>
 
             <a href="{{ url_for('test_step_3') }}">
                 <button id="nextButton"
-                        class="ml-16 px-6 py-3 text-2xl bg-blue-600 rounded-lg text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="bg-custom_light_blue hover:bg-custom_blue inline-block text-gray-700 py-2 px-4 rounded px-8">
                     Next
                 </button>
             </a>
