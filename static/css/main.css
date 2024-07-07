@@ -880,21 +880,8 @@ video {
   height: 100%;
 }
 
-
 .h-screen {
   height: 100vh;
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-32 {
-  height: 8rem;
-}
-
-.h-20 {
-  height: 5rem;
-
 }
 
 .max-h-screen {
@@ -955,10 +942,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-9\/12 {
-  width: 75%;
 }
 
 .max-w-4xl {
@@ -1332,11 +1315,6 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 
 .pb-2 {
