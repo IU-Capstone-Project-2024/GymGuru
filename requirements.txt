@@ -5,3 +5,4 @@ psycopg2-binary
 email_validator
 flask_socketio
 flask_sqlalchemy
+pytest
