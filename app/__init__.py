@@ -2,7 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_socketio import SocketIO, emit
 from app.sockets import socketio_bp
-from app.extensions import db, login_manager, socketio, session, engine
+from app.extensions import db, login_manager, socketio
 from app.routes import main
 from config import Config
 

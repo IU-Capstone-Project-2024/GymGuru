@@ -5,7 +5,7 @@ from app.models.User import User
 from forms.fittest_step_1_form import FittestStep1Form
 from forms.login_form import LoginForm
 from forms.register_form import RegistrationForm
-from app.extensions import session, login_manager, db
+from app.extensions import login_manager, db
 from app.models.UserFittestResult import UserFittestResult
 from app.sockets import user_result
 
@@ -20,9 +20,13 @@ def index():
 
 @main.route("/rating")
 def rating():
-    users = (session.query(User).all())
-    users_data = [user.to_json() for user in users]
-    return render_template("rating.html", users=users_data)
+    try:
+        users = (db.session.query(User).all())
+        users_data = [user.to_json() for user in users]
+        return render_template("rating.html", users=users_data)
+    except Exception as e:
+        db.session.rollback()
+        return "Error. Please try again :("
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -30,14 +34,14 @@ def login():
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():
         try:
-            user = session.query(User).filter(User.email == form.email.data).first()
+            user = db.session.query(User).filter(User.email == form.email.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user)
                 return redirect(url_for("main.index"))
             else:
                 flash("Invalid email or password", "danger")
-        except:
-            session.rollback()
+        except Exception as e:
+            db.session.rollback()
             flash("Unknown error. Please try again", "danger")
 
     return render_template("log_in.html", form=form)
@@ -198,11 +202,16 @@ def test_results():
 
     print(push_up_points, crunches_points, forward_bend_points)
 
-    user = session.query(User).get(user_id)
-    session.query(User).filter(User.id == user_id).update(
-        {User.push_up_counter: user.push_up_counter + push_up,
-         User.crunch_counter: user.crunch_counter + crunches})
-    session.commit()
+    try:
+        user = db.session.query(User).get(user_id)
+        db.session.query(User).filter(User.id == user_id).update(
+            {User.push_up_counter: user.push_up_counter + push_up,
+             User.crunch_counter: user.crunch_counter + crunches})
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return "Error. Please try again :("
+
     user_result.pop(user_id)
     return render_template("test_results.html", result={
         "push_up": push_up_points,
@@ -257,12 +266,16 @@ def register():
         user.surname = form.surname.data
         user.email = form.email.data
         user.set_password(form.password.data)
-        session.add(user)
-        session.commit()
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            flash("Unknown error. Please try again", "danger")
         return redirect(url_for("main.login"))
     return render_template("register.html", form=form)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return session.query(User).get(user_id)
+    return db.session.query(User).get(user_id)

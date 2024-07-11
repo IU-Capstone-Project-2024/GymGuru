@@ -1,7 +1,7 @@
 import flask_login
 from flask import Blueprint
 from flask_socketio import emit
-from app.extensions import session, socketio
+from app.extensions import socketio, db
 from app.models import User
 
 socketio_bp = Blueprint('socketio_bp', __name__)
@@ -13,10 +13,10 @@ user_result = dict()
 def handle_message(counter):
     user_id = flask_login.current_user.get_id()
     from app.models.User import User
-    user = session.query(User).get(user_id)
-    session.query(User).filter(User.id == user_id).update(
+    user = db.session.query(User).get(user_id)
+    db.session.query(User).filter(User.id == user_id).update(
         {User.curl_counter: user.curl_counter + counter})
-    session.commit()
+    db.session.commit()
 
 
 @socketio.on('step_2')
