@@ -21,7 +21,16 @@ jobs:
         
     - name: Checkout code
       uses: actions/checkout@v4
-    
+      
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Test code
+      run: |
+        pytest tests/
+      
     - name: Build Docker container
       run: docker compose build
 
