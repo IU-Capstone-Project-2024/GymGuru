@@ -1,23 +1,23 @@
 import pytest
 from app import create_app
 from app.extensions import db
+from config import TestingConfig
 
 
 @pytest.fixture()
 def init():
-    app = create_app()
-    app.config.update({
-        "TESTING": True,
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "WTF_CSRF_ENABLED": False
-    })
+    app = create_app(TestingConfig)
 
-   # with app.app_context():
-        #db.drop_all()
-        #db.create_all()
+    with app.app_context():
+        if str(db.engine.url) != TestingConfig.SQLALCHEMY_DATABASE_URI:
+            return
+        db.drop_all()
+        db.create_all()
 
     yield app
 
+    with app.app_context():
+        db.drop_all()
 
 
 @pytest.fixture()

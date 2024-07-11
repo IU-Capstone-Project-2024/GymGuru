@@ -4,13 +4,13 @@ from flask_socketio import SocketIO, emit
 from app.sockets import socketio_bp
 from app.extensions import db, login_manager, socketio
 from app.routes import main
-from config import Config
+from config import Config, DevelopmentConfig
 
 
-def create_app():
+def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = Config.SECRET_KEY
-    app.config["SQLALCHEMY_DATABASE_URI"] = Config.SQLALCHEMY_DATABASE_URI
+    app.config.from_object(config_class)
+
     db.init_app(app)
     login_manager.init_app(app)
     socketio.init_app(app)
