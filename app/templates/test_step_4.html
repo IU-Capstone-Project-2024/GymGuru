@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>STEP 4: Crunches</title>
+{% endblock %}
+
+{% block content %}
+    <div id="loader" class="h-screen flex justify-center items-center">
+        <svg class="w-10 h-10 animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>
+    </div>
+    <div id="content" class="hidden flex flex-col items-center justify-center min-h-screen bg-white-200 text-white">
+        <div id="camera" class="h-1/2 w-1/2">
+            <canvas id="resultCanvas" class="w-full h-full object-cover"></canvas>
+        </div>
+        <div id="camera" class="hidden">
+            <video id="localVideo" autoplay playsinline class="hidden"></video>
+        </div>
+
+        <div class="flex flex-row items-center justify-center m-8">
+             <div id="score" class="text-2xl font-bold text-custom_dark_blue pr-8">Score: <span id="scoreValue">0</span></div>
+            <div id="points" class="text-2xl font-bold text-custom_dark_blue pr-8">Points: <span id="pointsValue">0</span></div>
+
+            <a href="{{ url_for('main.test_results') }}">
+                <button id="nextButton"
+                       class="bg-custom_light_blue hover:bg-custom_blue inline-block text-gray-700 py-2 px-4 rounded px-8">
+                    Next
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    <script src="{{ url_for('static', filename='movenet.js') }}"></script>
+    <script src="{{ url_for('static', filename='exercises.js') }}"></script>
+    <script src="{{ url_for('static', filename='forward_bend.js') }}"></script>
+    <script src="{{ url_for('static', filename='test_step_4.js') }}"></script>
+
+    <script>
+        // add loading functionality while camera is not ready
+        function startCamera() {
+            const video_element = document.getElementById('localVideo');
+            const loader_element = document.getElementById('loader');
+            const content_element = document.getElementById('content');
+
+            navigator.mediaDevices.getUserMedia({video: true})
+                .then(
+                    (stream)=> {
+                        video_element.srcObject = stream;
+                        video_element.onloadedmetadata = () =>{
+                            video_element.play();
+                            loader_element.classList.add('hidden');
+                            content_element.classList.remove('hidden');
+                        };
+                })
+                .catch((error) =>{
+                    console.error('Error camera access:', error);
+                })
+        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            startCamera();
+             let points = 0;
+        let maxReached = false;
+
+        // Update score and points display
+        setInterval(function() {
+            document.getElementById('scoreValue').textContent = score;
+            if (maxReached) {
+                document.getElementById('pointsValue').textContent = points + " (max)";
+            } else {
+                document.getElementById('pointsValue').textContent = points;
+            }
+        }, 1000 / 25);
+
+        });
+    </script>
+{% endblock %}
