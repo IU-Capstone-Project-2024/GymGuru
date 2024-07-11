@@ -37,7 +37,7 @@ def login():
             else:
                 flash("Invalid email or password", "danger")
         except:
-            db.rollback()
+            session.rollback()
             flash("Unknown error. Please try again", "danger")
 
     return render_template("log_in.html", form=form)
