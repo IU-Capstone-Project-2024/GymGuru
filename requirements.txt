@@ -1,7 +1,7 @@
 flask_wtf
 sqlalchemy
 flask-login
-psycopg2
+psycopg2-binary
 email_validator
 flask_socketio
 flask_sqlalchemy
