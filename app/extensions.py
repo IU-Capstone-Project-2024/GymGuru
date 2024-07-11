@@ -1,13 +1,11 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_socketio import SocketIO
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-
-from config import Config
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = "login"
 login_manager.login_message = ""
+login_manager.blueprint_login_views = {
+    'main': 'main.login',
+}
 socketio = SocketIO()
