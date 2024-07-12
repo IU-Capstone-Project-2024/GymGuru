@@ -41,7 +41,7 @@ jobs:
 
     - name: Check if site is available
       run: |
-        sleep(5)
+        sleep 5
         set -e
         url="localhost"
 
