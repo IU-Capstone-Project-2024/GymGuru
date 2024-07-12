@@ -38,4 +38,20 @@ jobs:
 
     - name: Run Docker container
       run: docker compose up -d
+
+    - name: Check if site is available
+        run: |
+          
+          sleep(5)
+          set -e
+          url="localhost"
+
+          response_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "$url")
+          
+          if [ "$response_code" -eq 200 ]; then
+            echo "Site is available"
+          else
+            echo "Site is not available"
+            exit 1
+          fi
      
