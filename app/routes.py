@@ -1,7 +1,9 @@
+import uuid
+
 from flask import render_template, redirect, url_for, flash, request, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 
-from app.models.User import User
+from app.models.User import User, Exercise, FitnessTestResult
 from forms.fittest_step_1_form import FittestStep1Form
 from forms.login_form import LoginForm
 from forms.register_form import RegistrationForm
@@ -174,39 +176,32 @@ def test_preview():
 @main.route("/test_results")
 @login_required
 def test_results():
-    # TODO: REFACTOR!!!
     user_id = current_user.get_id()
-    result = user_result[user_id]
-    forward_bend = result.forward_bend
-    forward_bend_points = 0
-
-    push_up = result.push_up
-    # TODO check for man or woman
-    push_up_points = 0
-    if (push_up >= 35):
-        push_up_points = 25
-    elif (push_up >= 15):
-        push_up_points = 15
-    elif (push_up >= 10):
-        push_up_points = 10
-
-    crunches = result.crunches
-    # TODO check for man or woman
-    crunches_points = 0
-    if (crunches >= 43):
-        crunches_points = 25
-    elif (crunches >= 35):
-        crunches_points = 15
-    elif (crunches >= 20):
-        crunches_points = 10
-
-    print(push_up_points, crunches_points, forward_bend_points)
+    # gender = user.gender
+    gender = 'M'
+    result: UserFittestResult = user_result[user_id]
+    points = result.get_points(gender)
+    push_up_points = points['push_up']
+    crunches_points = points['crunches']
+    forward_bend_points = points['forward_bend']
 
     try:
-        user = db.session.query(User).get(user_id)
-        db.session.query(User).filter(User.id == user_id).update(
-            {User.push_up_counter: user.push_up_counter + push_up,
-             User.crunch_counter: user.crunch_counter + crunches})
+        fitness_test_result = FitnessTestResult()
+
+        fitness_test_result.user_id = user_id
+        fitness_test_result.test_id = str(uuid.uuid4())
+        fitness_test_result.height = result.height
+        fitness_test_result.weight = result.weight
+        fitness_test_result.push_up_counter = result.push_up
+        fitness_test_result.crunch_counter = result.crunches
+        fitness_test_result.forward_bend = result.forward_bend
+        fitness_test_result.datetime = db.func.now()
+        db.session.add(fitness_test_result)
+
+        db.session.query(Exercise).filter(Exercise.user_id == user_id).update(
+            {Exercise.push_up_counter: Exercise.push_up_counter + result.push_up,
+             Exercise.crunch_counter: Exercise.crunch_counter + result.crunches})
+
         db.session.commit()
     except Exception as e:
         db.session.rollback()
@@ -261,21 +256,26 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User()
-        user.name = form.name.data
-        user.surname = form.surname.data
-        user.email = form.email.data
-        user.set_password(form.password.data)
         try:
+            user = User()
+            user.name = form.name.data
+            user.surname = form.surname.data
+            user.email = form.email.data
+            user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
-        except:
+
+            new_exercise = Exercise(user_id=user.user_id)
+            db.session.add(new_exercise)
+            db.session.commit()
+        except Exception as e:
             db.session.rollback()
             flash("Unknown error. Please try again", "danger")
+
         return redirect(url_for("main.login"))
     return render_template("register.html", form=form)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.get(User,user_id)
+    return db.session.get(User, user_id)
