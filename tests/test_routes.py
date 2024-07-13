@@ -22,6 +22,7 @@ def test_register(client):
         'surname': 'User',
         'email': 'testuser@example.com',
         'password': 'password123',
+        'gender' : 'M'
     }, follow_redirects=True)
 
     assert response.status_code == 200
@@ -40,7 +41,8 @@ def test_login(client):
         'surname': 'User',
         'email': 'testuser@example.com',
         'password': 'password123',
-        'confirm': 'password123'
+        'confirm': 'password123',
+        'gender': 'M'
     }, follow_redirects=True)
 
     response = client.get("login")
@@ -64,7 +66,8 @@ def test_logout(client):
         'surname': 'User',
         'email': 'testuser@example.com',
         'password': 'password123',
-        'confirm': 'password123'
+        'confirm': 'password123',
+        'gender': 'M'
     }, follow_redirects=True)
 
     client.post('/login', data={
@@ -88,7 +91,8 @@ def test_protected_route(client):
         'surname': 'User',
         'email': 'testuser@example.com',
         'password': 'password123',
-        'confirm': 'password123'
+        'confirm': 'password123',
+        'gender': 'M'
     }, follow_redirects=True)
 
     client.post("/login", data={
