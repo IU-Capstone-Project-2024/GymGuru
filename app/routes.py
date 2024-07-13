@@ -196,8 +196,9 @@ def test_preview():
 @login_required
 def test_results():
     user_id = current_user.get_id()
-    # gender = user.gender
-    gender = 'M'
+    user = db.session.query(User).get(user_id)
+    gender = user.gender
+
     result: UserFittestResult = user_result[user_id]
     points = result.get_points(gender)
     push_up_points = points['push_up']
