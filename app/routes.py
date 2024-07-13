@@ -1,6 +1,8 @@
+import csv
+import io
 import uuid
 
-from flask import render_template, redirect, url_for, flash, request, Blueprint
+from flask import render_template, redirect, url_for, flash, request, Blueprint, send_file
 from flask_login import login_user, logout_user, login_required, current_user
 
 from app.models.User import User, Exercise, FitnessTestResult
@@ -90,10 +92,27 @@ def v_up_crunch_preview():
     return render_template('v_up_crunch_preview.html')
 
 
-@main.route("/profile")
+@main.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
-    return render_template("profile.html", user=current_user)
+    if request.method == 'POST':
+        csv_content = b"User email, Weight, Height, Push-up (times), Crunches(times), Forward Bend\n"
+
+        users = (db.session.query(User).all())
+        for user in users:
+            fitness_test_results = (
+                db.session.query(FitnessTestResult).filter(FitnessTestResult.user_id == user.user_id).all())
+            if len(fitness_test_results) == 0:
+                continue
+            last_result: FitnessTestResult = max(fitness_test_results, key=lambda x: x.datetime)
+            csv_content += (f"{user.email}, {last_result.weight}, {last_result.height}, {last_result.push_up_counter}, "
+                            f"{last_result.crunch_counter}, {last_result.forward_bend.value}\n").encode()
+            print(last_result)
+        csv_file = io.BytesIO(csv_content)
+        csv_file.seek(0)
+        return send_file(csv_file, as_attachment=True, download_name='data.csv', mimetype='text/csv')
+    elif request.method == 'GET':
+        return render_template("profile.html", user=current_user)
 
 
 @main.route('/lateral_raise_preview')

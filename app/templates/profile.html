@@ -2,134 +2,147 @@
 {% block title %}<title>Вход</title>{% endblock %}
 {% block content %}
     <div class="container mx-auto py-12 px-4">
-    <h1 class="text-2xl font-bold mb-12">Welcome, {{ user.name }} <span>👋</span></h1>
-    <section>
-        <h2 class="text-xl font-bold mb-8">Sport achievements</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.push_up_counter }}</p>
-                <p class="p-2 text-gray-700">push-ups</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.squat_counter }}</p>
-                <p class="p-2 text-gray-700">squats</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.curl_counter }}</p>
-                <p class="p-2 text-gray-700">curls</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.crunch_counter }}</p>
-                <p class="p-2 text-gray-700">crunches</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.lunge_counter }}</p>
-                <p class="p-2 text-gray-700">lunges</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.v_up_crunch_counter }}</p>
-                <p class="p-2 text-gray-700">v-up crunches</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.lateral_raise_counter }}</p>
-                <p class="p-2 text-gray-700">lateral raises</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.best_forward_bend }}</p>
-                <p class="p-2 text-gray-700">forward bend</p>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.plank_counter }}</p>
-                <p class="p-2 text-gray-700">plank</p>
-            </div>
-
-        </div>
-    </section>
-
-    {% if user.user_type == 'coach' %}
-
-     <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">Fitness test results</h2>
-        <div class="flex items-center mt-4 mb-4">
-            <div id="select-group-container" class="relative rounded-md flex bg-white border focus-within:border-custom_light_blue">
-                <div id='select-group' tabindex="0" class="cursor-pointer rounded-md px-4 py-2 text-gray-700 focus:outline-none">Select group</div>
-                <button id='toggle-button' tabindex="0" type="button" class="inline-flex items-center justify-center rounded-r-md px-2 text-gray-600 focus:outline-none">
-                    <img width="20" src="../static/images/down_arrow.svg"/>
-                </button>
-                <div id="dropdown-menu" class="dropdown absolute top-full left-0 z-10 mt-2 w-full origin-top-right rounded-md border border-gray-100 bg-white shadow-lg hidden">
+        <h1 class="text-2xl font-bold mb-12">Welcome, {{ user.name }} <span>👋</span></h1>
+        <section>
+            <h2 class="text-xl font-bold mb-8">Sport achievements</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.push_up_counter }}</p>
+                    <p class="p-2 text-gray-700">push-ups</p>
                 </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.squat_counter }}</p>
+                    <p class="p-2 text-gray-700">squats</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.curl_counter }}</p>
+                    <p class="p-2 text-gray-700">curls</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.crunch_counter }}</p>
+                    <p class="p-2 text-gray-700">crunches</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.lunge_counter }}</p>
+                    <p class="p-2 text-gray-700">lunges</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.v_up_crunch_counter }}</p>
+                    <p class="p-2 text-gray-700">v-up crunches</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.lateral_raise_counter }}</p>
+                    <p class="p-2 text-gray-700">lateral raises</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.best_forward_bend }}</p>
+                    <p class="p-2 text-gray-700">forward bend</p>
+                </div>
+
+                <div class="flex items-center mb-4">
+                    <p class="bg-custom_light_blue border border-custom_light_blue rounded w-16 mr-4 p-2 text-center">{{ user.exercise.plank_counter }}</p>
+                    <p class="p-2 text-gray-700">plank</p>
+                </div>
+
             </div>
-        </div>
-         <div class="mb-4">
-                    <button type="submit" class="bg-custom_light_blue hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Download</button>
-         </div>
-    </section>
+        </section>
 
-    {% endif %}
 
-    <section class="mb-8">
-        <h2 class="text-xl font-bold mb-4">Personal info</h2>
-        <form>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+        <section class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Personal info</h2>
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+                    <div>
+                        <label class="block text-gray-700 mb-4 ">Name</label>
+                        <input type="text" value="{{ user.name }}"
+                               class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-4">Surname</label>
+                        <input type="text" value="{{ user.surname }}"
+                               class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-4">Email</label>
+                    <input type="email" value="{{ user.email }}"
+                           class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                </div>
+                {% if user.user_type == 'coach' %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-4">User type</label>
+                        <input type="text" value="{{ user.user_type.value }}" class="bg-white border rounded w-full p-2"
+                               readonly>
+                    </div>
+                {% endif %}
                 <div>
-                    <label class="block text-gray-700 mb-4 ">Name</label>
-                    <input type="text" value="{{ user.name }}" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+                    <button type="submit"
+                            class="bg-custom_light_blue  hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Save
+                    </button>
                 </div>
+            </form>
+        </section>
 
-                <div>
-                    <label class="block text-gray-700 mb-4">Surname</label>
-                    <input type="text" value="{{ user.surname }}" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
+        {% if user.user_type.value == 'coach' %}
+
+            <section class="mb-8">
+                <h2 class="text-xl font-bold mb-4">Fitness test results</h2>
+                {#        <div class="flex items-center mt-4 mb-4">#}
+                {#            <div id="select-group-container" class="relative rounded-md flex bg-white border focus-within:border-custom_light_blue">#}
+                {#                <div id='select-group' tabindex="0" class="cursor-pointer rounded-md px-4 py-2 text-gray-700 focus:outline-none">Select group</div>#}
+                {#                <button id='toggle-button' tabindex="0" type="button" class="inline-flex items-center justify-center rounded-r-md px-2 text-gray-600 focus:outline-none">#}
+                {#                    <img width="20" src="../static/images/down_arrow.svg"/>#}
+                {#                </button>#}
+                {#                <div id="dropdown-menu" class="dropdown absolute top-full left-0 z-10 mt-2 w-full origin-top-right rounded-md border border-gray-100 bg-white shadow-lg hidden">#}
+                {#                </div>#}
+                {#            </div>#}
+                {#        </div>#}
+                <div class="mb-4">
+                    <form action="{{ url_for('main.profile') }}" method="POST">
+                        <button type="submit"
+                                class="bg-custom_light_blue hover:bg-custom_blue text-gray-700 rounded py-2 px-4">
+                            Download
+                        </button>
+                    </form>
+
                 </div>
-            </div>
+            </section>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 mb-4">Email</label>
-                <input type="email" value="{{ user.email }}" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">
-            </div>
-            {% if user.user_type == 'coach' %}
-            <div class="mb-4">
-                <label class="block text-gray-700 mb-4">User type</label>
-                <input type="text" value="{{ user.user_type.value }}" class="bg-white border rounded w-full p-2" readonly>
-            </div>
-            {% endif %}
-            <div>
-                <button type="submit" class="bg-custom_light_blue  hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Save</button>
-            </div>
-        </form>
-    </section>
+        {% endif %}
 
-{#    <section>#}
-{#        <h2 class="text-xl font-bold mb-4">Change password</h2>#}
-{#        <form>#}
-{#            <div>#}
-{#                <div class="mb-4">#}
-{#                    <label class="block text-gray-700 mb-4">Old password</label>#}
-{#                    <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">#}
-{#                </div>#}
-{##}
-{#                <div class="mb-4">#}
-{#                    <label class="block text-gray-700 mb-4">New password</label>#}
-{#                    <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">#}
-{#                </div>#}
-{#                <div class="mb-4">#}
-{#                    <button type="submit" class="bg-custom_light_blue hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Save</button>#}
-{#                </div>#}
-{#            </div>#}
-{#        </form>#}
-{#    </section>#}
+        {#    <section>#}
+        {#        <h2 class="text-xl font-bold mb-4">Change password</h2>#}
+        {#        <form>#}
+        {#            <div>#}
+        {#                <div class="mb-4">#}
+        {#                    <label class="block text-gray-700 mb-4">Old password</label>#}
+        {#                    <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">#}
+        {#                </div>#}
+        {##}
+        {#                <div class="mb-4">#}
+        {#                    <label class="block text-gray-700 mb-4">New password</label>#}
+        {#                    <input type="text" class="bg-white border focus:outline-none focus:border-custom_light_blue rounded w-full p-2">#}
+        {#                </div>#}
+        {#                <div class="mb-4">#}
+        {#                    <button type="submit" class="bg-custom_light_blue hover:bg-custom_blue text-gray-700 rounded py-2 px-4">Save</button>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </form>#}
+        {#    </section>#}
 
     </div>
 
     <script>
-        const options=["B22-SD-01", "B22-DS-01", "B22-AI-01"];
+        const options = ["B22-SD-01", "B22-DS-01", "B22-AI-01"];
 
         const selectGroup = document.getElementById('select-group');
         const toggleButton = document.getElementById('toggle-button');
@@ -144,7 +157,7 @@
                 const optionElement = document.createElement('div');
                 optionElement.className = 'block rounded px-4 py-2 text-sm text-gray-500 no-underline hover:bg-custom_light_blue';
                 optionElement.textContent = option;
-                optionElement.addEventListener('click', function() {
+                optionElement.addEventListener('click', function () {
                     selectGroup.textContent = option;
                     dropdownMenu.classList.add('hidden');
                 });
@@ -153,7 +166,7 @@
         }
 
         function clickOutsideToHideMenu(event) {
-            if (!dropdownMenu.contains(event.target) && ! selectGroup.contains(event.target) && !toggleButton.contains(event.target)){
+            if (!dropdownMenu.contains(event.target) && !selectGroup.contains(event.target) && !toggleButton.contains(event.target)) {
                 dropdownMenu.classList.add('hidden');
             }
 
