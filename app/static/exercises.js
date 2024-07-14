@@ -5,12 +5,11 @@ class BaseExercise {
     this.startTime = null;
     this.endTime =  null;
 
-    this.keypoints = extractedKeypoints;
-
     this.initializeVariables();
   }
 
   initializeVariables() {
+    this.keypoints = extractedKeypoints;
     this.nose = this.keypoints[0];
     this.shoulder_left = this.keypoints[5];
     this.shoulder_right = this.keypoints[6];
@@ -218,12 +217,12 @@ class Exercises extends BaseExercise {
     }
     if (this.stage === "up") {
       this.stopTimer();
-      plank = this.timeElapsed();
+      score = this.timeElapsed();
     }
     if (this.stage === "up" && (shoulder_elbow_wrist_angle_left <= 120 || shoulder_elbow_wrist_angle_right <= 120 || this.wrist_left.y < this.shoulder_left.y || this.wrist_right.y < this.shoulder_right.y || this.knee_left.y >= this.ankle_left.y || this.knee_right.y >= this.ankle_right.y)) {
       this.updateStage('down');
       this.stopTimer();
-      plank = this.timeElapsed();
+      score = this.timeElapsed();
     }
     if (shoulder_hip_knee_angle_right < 150) {
       this.updateError('bad back');
@@ -299,14 +298,14 @@ class AdvancedExercise extends BaseExercise {
     if (hip_knee_ankle_angle_left >= 165 && hip_knee_ankle_angle_right >= 165) {
       begin = true;
     }
-    if (hip_knee_ankle_angle_left >= 165 && hip_knee_ankle_angle_right >= 165 && this.finger.y >= Math.max(this.ankle_left.y, this.ankle_right.y) && this.middle_finger.y < Math.max(this.ankle_left.y, this.ankle_right.y) && bend !== 'fists' && bend !== 'palms') {
-      bend = 'fingers';
+    if (hip_knee_ankle_angle_left >= 165 && hip_knee_ankle_angle_right >= 165 && this.finger.y >= Math.max(this.ankle_left.y, this.ankle_right.y) && this.middle_finger.y < Math.max(this.ankle_left.y, this.ankle_right.y) && score !== 'fists' && score !== 'palms') {
+      score = 'fingers';
     }
-    if (hip_knee_ankle_angle_left >= 165 && hip_knee_ankle_angle_right >= 165 && this.middle_finger.y >= Math.max(this.ankle_left.y, this.ankle_right.y) && this.wrist.y < Math.max(this.ankle_left.y, this.ankle_right.y) && bend !== 'palms') {
-      bend = 'fists';
+    if (hip_knee_ankle_angle_left >= 165 && hip_knee_ankle_angle_right >= 165 && this.middle_finger.y >= Math.max(this.ankle_left.y, this.ankle_right.y) && this.wrist.y < Math.max(this.ankle_left.y, this.ankle_right.y) && score !== 'palms') {
+      score = 'fists';
     }
     if (hip_knee_ankle_angle_left >= 165 && hip_knee_ankle_angle_right >= 165 && this.wrist.y >= Math.max(this.ankle_left.y, this.ankle_right.y)) {
-      bend = 'palms';
+      score = 'palms';
     }
     if (hip_knee_ankle_angle_left < 165 || hip_knee_ankle_angle_right < 165) {
       this.updateError('bad knees');

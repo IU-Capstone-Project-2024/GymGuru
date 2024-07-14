@@ -27,13 +27,12 @@ let fps = 0;
 let score = 0;
 
 let plankExercise = false;
-let plank = null;
 
 // Логика завершения упражнения
 if(finishButton!=null){
     finishButton.addEventListener('click', () => {
     if (plankExercise) {
-        alert(`Вы завершили с ${plank} секунд!`);
+        alert(`Вы завершили с ${score} секунд!`);
     }
     else {
         socket.emit("push_up", score);

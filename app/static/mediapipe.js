@@ -28,12 +28,11 @@ let fps = 0;
 let score = 0;
 
 let bendExercise = false;
-let bend = null;
 
 if (finishButton != null) {
     finishButton.addEventListener('click', () => {
         if (bendExercise) {
-            alert(`Вы завершили с ${bend}!`);
+            alert(`Вы завершили с ${score}!`);
         }
         else {
             alert(`Вы завершили с ${score} баллами!`);
