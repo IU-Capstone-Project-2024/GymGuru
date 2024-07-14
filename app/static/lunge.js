@@ -1,6 +1,6 @@
 const checkKeypoints = () => {
     if (extractedKeypoints.length !== 0) {
-        const lunge = new Exercises();
+        const lunge = new AdvancedExercise();
 
         const updateKeypointsInterval = setInterval(() => {
             lunge.updateKeypoints();
