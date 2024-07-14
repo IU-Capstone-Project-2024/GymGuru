@@ -11,6 +11,7 @@ resultCanvas.height = videoHeight;
 
 let extractedKeypoints = [];
 let extractedHandKeypoints = [];
+
 let begin = false;
 let stage = '';
 let previousSound = null;
@@ -25,11 +26,18 @@ let lastFrameTime = performance.now();
 let frameCount = 0;
 let fps = 0;
 let score = 0;
+
+let bendExercise = false;
 let bend = null;
 
 if (finishButton != null) {
     finishButton.addEventListener('click', () => {
-        ialert(`Вы завершили с ${bend}!`);
+        if (bendExercise) {
+            alert(`Вы завершили с ${bend}!`);
+        }
+        else {
+            alert(`Вы завершили с ${score} баллами!`);
+        }
     });
 }
 
@@ -142,6 +150,9 @@ async function init() {
                               ctx.fill();
                             });
                         });
+                    }
+                    else {
+                        extractedHandKeypoints = [];
                     }
 
                     // Update FPS calculation

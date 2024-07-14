@@ -1,6 +1,6 @@
 const checkKeypoints = () => {
     if (extractedKeypoints.length !== 0) {
-        const squat = new Exercises();
+        const squat = new AdvancedExercise();
 
         const updateKeypointsInterval = setInterval(() => {
             squat.updateKeypoints();
