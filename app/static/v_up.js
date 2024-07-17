@@ -5,14 +5,25 @@ const checkKeypoints = () => {
         const updateKeypointsInterval = setInterval(() => {
             v_up.updateKeypoints();
         }, 10);
-  
+
         const updateScoreInterval = setInterval(() => {
             v_up.gen_v_up();
         }, 100);
-  
+
     } else {
-      setTimeout(checkKeypoints, 1000);
+        setTimeout(checkKeypoints, 1000);
     }
-  };
-  
-  checkKeypoints();
+};
+
+checkKeypoints();
+
+if (finishButton != null) {
+    finishButton.addEventListener('click', () => {
+        if (plankExercise) {
+            alert(`Вы завершили с ${score} секунд!`);
+        } else {
+            socket.emit("v_up_crunch", score);
+            alert(`Вы завершили с ${score} баллами!`);
+        }
+    });
+}

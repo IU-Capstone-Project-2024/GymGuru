@@ -5,7 +5,7 @@ import uuid
 from flask import render_template, redirect, url_for, flash, request, Blueprint, send_file
 from flask_login import login_user, logout_user, login_required, current_user
 
-from app.models.User import User, Exercise, FitnessTestResult
+from app.models.DbModels import User, Exercise, FitnessTestResult
 from forms.fittest_step_1_form import FittestStep1Form
 from forms.login_form import LoginForm
 from forms.register_form import RegistrationForm

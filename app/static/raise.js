@@ -5,14 +5,25 @@ const checkKeypoints = () => {
         const updateKeypointsInterval = setInterval(() => {
             raise.updateKeypoints();
         }, 10);
-  
+
         const updateScoreInterval = setInterval(() => {
             raise.gen_raise();
         }, 100);
-  
+
     } else {
-      setTimeout(checkKeypoints, 1000);
+        setTimeout(checkKeypoints, 1000);
     }
-  };
-  
-  checkKeypoints();
+};
+
+checkKeypoints();
+
+if (finishButton != null) {
+    finishButton.addEventListener('click', () => {
+        if (plankExercise) {
+            alert(`Вы завершили с ${score} секунд!`);
+        } else {
+            socket.emit("lateral_raise", score);
+            alert(`Вы завершили с ${score} баллами!`);
+        }
+    });
+}

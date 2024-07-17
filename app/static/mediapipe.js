@@ -29,17 +29,6 @@ let score = 0;
 
 let bendExercise = false;
 
-if (finishButton != null) {
-    finishButton.addEventListener('click', () => {
-        if (bendExercise) {
-            alert(`Вы завершили с ${score}!`);
-        }
-        else {
-            alert(`Вы завершили с ${score} баллами!`);
-        }
-    });
-}
-
 function drawFPS() {
     ctx.fillStyle = 'green';
     ctx.font = '30px Arial';

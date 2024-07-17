@@ -5,14 +5,25 @@ const checkKeypoints = () => {
         const updateKeypointsInterval = setInterval(() => {
             crunch.updateKeypoints();
         }, 10);
-  
+
         const updateScoreInterval = setInterval(() => {
             crunch.gen_crunch();
         }, 100);
-  
+
     } else {
-      setTimeout(checkKeypoints, 1000);
+        setTimeout(checkKeypoints, 1000);
     }
-  };
-  
-  checkKeypoints();
+};
+
+checkKeypoints();
+
+if (finishButton != null) {
+    finishButton.addEventListener('click', () => {
+        if (plankExercise) {
+            alert(`Вы завершили с ${score} секунд!`);
+        } else {
+            socket.emit("crunch", score);
+            alert(`Вы завершили с ${score} баллами!`);
+        }
+    });
+}
