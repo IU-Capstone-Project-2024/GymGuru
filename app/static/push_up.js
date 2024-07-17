@@ -19,11 +19,7 @@ checkKeypoints();
 
 if (finishButton != null) {
     finishButton.addEventListener('click', () => {
-        if (plankExercise) {
-            alert(`Вы завершили с ${score} секунд!`);
-        } else {
-            socket.emit("push_up", score);
+      socket.emit("push_up", score);
             alert(`Вы завершили с ${score} баллами!`);
-        }
     });
 }
