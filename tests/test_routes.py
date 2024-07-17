@@ -1,6 +1,6 @@
 import pytest
 from flask import url_for
-from app.models.User import User
+from app.models.DbModels import User
 from app.extensions import db, socketio
 
 

@@ -28,18 +28,7 @@ let score = 0;
 
 let plankExercise = false;
 
-// Логика завершения упражнения
-if(finishButton!=null){
-    finishButton.addEventListener('click', () => {
-    if (plankExercise) {
-        alert(`Вы завершили с ${score} секунд!`);
-    }
-    else {
-        socket.emit("push_up", score);
-        alert(`Вы завершили с ${score} баллами!`);
-    }
-});
-}
+
 
 function drawFPS() {
     ctx.fillStyle = 'green';

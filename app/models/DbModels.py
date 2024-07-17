@@ -10,10 +10,22 @@ class UserTypeEnum(enum.Enum):
     coach = "coach"
     student = "student"
 
+
 class ForwardBendEnum(enum.Enum):
     palms = "palms"
     fists = "fists"
     fingers = "fingers"
+
+    def __new__(cls, value):
+        forwardBend = object.__new__(cls)
+        forwardBend._value_ = value
+
+        return forwardBend
+
+
+
+    def __str__(self):
+        return self.value
 
 
 class User(db.Model, UserMixin):
