@@ -231,6 +231,7 @@ def test_results():
         fitness_test_result.datetime = db.func.now()
         db.session.add(fitness_test_result)
 
+
         db.session.query(Exercise).filter(Exercise.user_id == user_id).update(
             {Exercise.push_up_counter: Exercise.push_up_counter + result.push_up,
              Exercise.crunch_counter: Exercise.crunch_counter + result.crunches})
