@@ -15,6 +15,7 @@ class ForwardBendEnum(enum.Enum):
     palms = "palms"
     fists = "fists"
     fingers = "fingers"
+    zero = "zero"
 
     def __new__(cls, value):
         forwardBend = object.__new__(cls)
@@ -26,6 +27,22 @@ class ForwardBendEnum(enum.Enum):
 
     def __str__(self):
         return self.value
+
+def select_best(current_value: ForwardBendEnum, new_value: ForwardBendEnum):
+    if current_value == ForwardBendEnum.palms:
+        return current_value
+    elif current_value == ForwardBendEnum.fists:
+        if new_value == ForwardBendEnum.palms:
+            return new_value
+        else:
+            return current_value
+    elif current_value == ForwardBendEnum.fingers:
+        if new_value == ForwardBendEnum.palms or new_value == ForwardBendEnum.fists:
+            return new_value
+        else:
+            return current_value
+    else:
+        return new_value
 
 
 class User(db.Model, UserMixin):
@@ -76,7 +93,7 @@ class FitnessTestResult(db.Model):
     weight = db.Column(db.Integer, nullable=False)
     push_up_counter = db.Column(db.Integer, nullable=False)
     crunch_counter = db.Column(db.Integer, nullable=False)
-    forward_bend = db.Column(db.Enum(ForwardBendEnum), nullable=False)
+    forward_bend = db.Column(db.Enum(ForwardBendEnum), nullable=True)
 
 
 class Exercise(db.Model):
@@ -90,5 +107,5 @@ class Exercise(db.Model):
     lunge_counter = db.Column(db.Integer, default=0)
     v_up_crunch_counter = db.Column(db.Integer, default=0)
     lateral_raise_counter = db.Column(db.Integer, default=0)
-    best_forward_bend = db.Column(db.Enum(ForwardBendEnum), nullable=False)
+    best_forward_bend = db.Column(db.Enum(ForwardBendEnum), nullable=True)
     plank_counter = db.Column(db.Integer, default=0)

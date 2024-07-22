@@ -1,9 +1,8 @@
 import flask_login
 from flask import Blueprint
-from flask_socketio import emit
+
 from app.extensions import socketio, db
-from app.models import DbModels
-from app.models.DbModels import ForwardBendEnum, Exercise
+from app.models.DbModels import ForwardBendEnum, Exercise, select_best
 
 socketio_bp = Blueprint('socketio_bp', __name__)
 
@@ -57,20 +56,6 @@ def handle_message(counter):
     update_exercise(Exercise.lateral_raise_counter, counter)
 
 
-def select_best(current_value: ForwardBendEnum, new_value: ForwardBendEnum):
-    if current_value == ForwardBendEnum.palms:
-        return current_value
-    elif current_value == ForwardBendEnum.fists:
-        if new_value == ForwardBendEnum.palms:
-            return new_value
-        else:
-            return current_value
-    elif current_value == ForwardBendEnum.fingers:
-        if new_value == ForwardBendEnum.palms or new_value == ForwardBendEnum.fists:
-            return new_value
-        else:
-            return current_value
-
 
 @socketio.on('forward_bend')
 def handle_message(value):
@@ -79,10 +64,8 @@ def handle_message(value):
     if exercise:
         # Get the current value of the specified column
         current_value: ForwardBendEnum = exercise.best_forward_bend
-        if current_value == None:
-            current_value = ForwardBendEnum(value)
-        else:
-            current_value = select_best(current_value, ForwardBendEnum(value))
+
+        current_value = select_best(current_value, ForwardBendEnum(value))
 
         # Update the column with the new value
         db.session.query(Exercise).filter(Exercise.user_id == user_id).update(
@@ -92,27 +75,32 @@ def handle_message(value):
 
 @socketio.on('plank')
 def handle_message(counter):
+
     update_exercise(Exercise.plank_counter, counter)
-
-
-@socketio.on('step_2')
-def handle_message(counter):
-    user_id = flask_login.current_user.get_id()
-    user_result[user_id].push_up = counter
 
 
 @socketio.on('step_3')
 def handle_message(counter):
     user_id = flask_login.current_user.get_id()
-    user_result[user_id].crunches = counter
+    user_result[user_id].push_up = counter
 
 
 @socketio.on('step_4')
 def handle_message(counter):
     user_id = flask_login.current_user.get_id()
-    if counter == 1:
+    user_result[user_id].crunches = counter
+
+
+@socketio.on('step_2')
+def handle_message(counter):
+
+    user_id = flask_login.current_user.get_id()
+
+    if counter == "fingers":
         user_result[user_id].forward_bend = ForwardBendEnum.fingers
-    elif counter == 2:
+    elif counter == "fists":
         user_result[user_id].forward_bend = ForwardBendEnum.fists
-    elif counter == 3:
+    elif counter == "palms":
         user_result[user_id].forward_bend = ForwardBendEnum.palms
+    else:
+        user_result[user_id].forward_bend = ForwardBendEnum.zero

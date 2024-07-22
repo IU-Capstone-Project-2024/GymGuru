@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from app.models.DbModels import ForwardBendEnum
+
 
 @dataclass
 class UserFittestResult:
@@ -53,12 +55,14 @@ class UserFittestResult:
             case _:
                 raise ValueError("Invalid gender")
 
-        if self.forward_bend == 'palms':
+        if self.forward_bend == ForwardBendEnum.palms:
             forward_bend_points = 25
-        elif self.forward_bend == 'fists':
+        elif self.forward_bend == ForwardBendEnum.fists:
             forward_bend_points = 15
-        elif self.forward_bend == 'fingers':
+        elif self.forward_bend == ForwardBendEnum.fingers:
             forward_bend_points = 10
+        else:
+            forward_bend_points = 0
         return {
             "push_up": push_up_points,
             "crunches": crunches_points,

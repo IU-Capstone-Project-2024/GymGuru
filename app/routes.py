@@ -1,17 +1,16 @@
-import csv
 import io
 import uuid
 
 from flask import render_template, redirect, url_for, flash, request, Blueprint, send_file
 from flask_login import login_user, logout_user, login_required, current_user
 
-from app.models.DbModels import User, Exercise, FitnessTestResult
+from app.extensions import login_manager, db
+from app.models.DbModels import User, Exercise, FitnessTestResult, ForwardBendEnum, select_best
+from app.models.UserFittestResult import UserFittestResult
+from app.sockets import user_result
 from forms.fittest_step_1_form import FittestStep1Form
 from forms.login_form import LoginForm
 from forms.register_form import RegistrationForm
-from app.extensions import login_manager, db
-from app.models.UserFittestResult import UserFittestResult
-from app.sockets import user_result
 
 main = Blueprint('main', __name__)
 
@@ -46,7 +45,7 @@ def login():
                 flash("Invalid email or password", "danger")
         except Exception as e:
             db.session.rollback()
-            flash("Unknown error. Please try again", "danger")
+            flash(f'Unknown error. Please try again\n\n\n{e}', "danger")
 
     return render_template("log_in.html", form=form)
 
@@ -105,9 +104,14 @@ def profile():
             if len(fitness_test_results) == 0:
                 continue
             last_result: FitnessTestResult = max(fitness_test_results, key=lambda x: x.datetime)
+
+            forward_bend_res = "None"
+            if last_result.forward_bend is not None:
+                forward_bend_res = last_result.forward_bend.value
+
             csv_content += (f"{user.email}, {last_result.weight}, {last_result.height}, {last_result.push_up_counter}, "
-                            f"{last_result.crunch_counter}, {last_result.forward_bend.value}\n").encode()
-            print(last_result)
+                            f"{last_result.crunch_counter}, {forward_bend_res}\n").encode()
+
         csv_file = io.BytesIO(csv_content)
         csv_file.seek(0)
         return send_file(csv_file, as_attachment=True, download_name='data.csv', mimetype='text/csv')
@@ -192,6 +196,9 @@ def test_preview():
     return render_template("test_preview.html")
 
 
+
+
+
 @main.route("/test_results")
 @login_required
 def test_results():
@@ -214,7 +221,13 @@ def test_results():
         fitness_test_result.weight = result.weight
         fitness_test_result.push_up_counter = result.push_up
         fitness_test_result.crunch_counter = result.crunches
-        fitness_test_result.forward_bend = result.forward_bend
+
+        forward_bend_result = ForwardBendEnum.zero
+        if result.forward_bend == ForwardBendEnum.zero:
+            forward_bend_result = None
+        else:
+            forward_bend_result = result.forward_bend
+
         fitness_test_result.datetime = db.func.now()
         db.session.add(fitness_test_result)
 
@@ -222,10 +235,15 @@ def test_results():
             {Exercise.push_up_counter: Exercise.push_up_counter + result.push_up,
              Exercise.crunch_counter: Exercise.crunch_counter + result.crunches})
 
+        current_forward_bend = db.session.query(Exercise).get(user_id).best_forward_bend
+
+        db.session.query(Exercise).filter(Exercise.user_id == user_id).update(
+            {Exercise.best_forward_bend: select_best(current_forward_bend, forward_bend_result)})
+
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return "Error. Please try again :("
+        return "Error. Please try again :(\n\n\n" + str(e)
 
     user_result.pop(user_id)
     return render_template("test_results.html", result={
